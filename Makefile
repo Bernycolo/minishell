@@ -1,7 +1,7 @@
 # Variables
 CC = cc
 CFLAGS = -Wall -Werror -Wextra -I/usr/include
-INCLUDES = -I includes
+INCLUDES = -I includes -I $(LIBFT_DIR)
 
 SRC_DIR = src
 OBJ_DIR = obj
@@ -19,7 +19,7 @@ OBJ = $(SRC:%.c=$(OBJ_DIR)/%.o)
 DEP = $(OBJ:.o=.d)
 
 #Libft
-LIBFT_DIR = includes/libft
+LIBFT_DIR = libft
 LIBFT = $(LIBFT_DIR)/libft.a
 
 # Rules

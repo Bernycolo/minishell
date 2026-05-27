@@ -20,7 +20,7 @@
 # include <sys/ioctl.h>	// ioctl
 # include <term.h>	// tgetent, tgetflag, tgetnum, tgetstr, tgoto, tputs
 
-# include "libft/libft.h"
+# include "libft.h"
 # include <limits.h>
 
 # define BLUE	"\033[34m"	// azul
