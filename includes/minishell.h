@@ -25,12 +25,18 @@
 # define SOFT_YELLOW "\033[38;5;229m" // amarillo pastel
 # define WARM_GRAY "\033[38;5;245m"   // gris cálido
 
+typedef enum e_status
+{
+	FAILURE,
+	SUCCESS
+}					t_status;
+
 typedef enum e_token_type
 {
 	EMPTY,
 	CMD,
 	ARG,
-	TRUNK,
+	TRUNC,
 	APPEND,
 	INPUT,
 	PIPE,
@@ -53,5 +59,9 @@ typedef struct s_token
 	t_token_type	type;
 	struct s_token	*next;
 }					t_token;
+
+/*							Parser							*/
+t_status	parse(const char *input, t_cmd *cmd);
+
 
 #endif

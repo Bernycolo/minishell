@@ -14,7 +14,7 @@ GREEN = \033[0;32m
 RESET = \033[0m
 
 # Files
-SRC = minishell.c
+SRC = minishell.c parse.c
 OBJ = $(SRC:%.c=$(OBJ_DIR)/%.o)
 DEP = $(OBJ:.o=.d)
 
