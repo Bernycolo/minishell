@@ -17,14 +17,9 @@ void	tokenize(const char *input)
 	ft_printf("long sep: %d\n", sep);
 }
 
-
-
-
-
-
 t_status	parse(const char *input, t_cmd *cmd)
 {
 	tokenize(input);
-	cmd->arg = ft_split(input,  ' ');
+	cmd->arg = ft_split(input, ' ');
 	return (SUCCESS);
 }

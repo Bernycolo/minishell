@@ -5,14 +5,14 @@ int	main(void)
 	char	*str;
 	char	*prompt;
 	t_cmd	*cmd;
-	int	i;
+	int		i;
 
 	cmd = malloc(sizeof(t_cmd));
 	if (!cmd)
 		return (1);
 	printf("\033[2J\033[H");
 	printf("Welcome to minishell!\n");
-	prompt = ft_strjoin(SOFT_YELLOW "minishell" RESET " % ", GRAY);;
+	prompt = ft_strjoin(SOFT_YELLOW "minishell" RESET " % ", GRAY);
 	str = readline(prompt);
 	while (str[0] != 0)
 	{
@@ -22,12 +22,12 @@ int	main(void)
 			i = 0;
 			while (cmd->arg[i])
 				printf("DEBUG: %s\n", cmd->arg[i++]);
-			
 		}
 		free(str);
+		free_cmd(&cmd);
 		str = readline(prompt);
 	}
 	free(prompt);
-	free(cmd);
+	free_cmd(&cmd);
 	free(str);
 }
