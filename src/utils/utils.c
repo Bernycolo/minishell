@@ -1,5 +1,19 @@
 #include "minishell.h"
 
+t_status	init_cmd(t_cmd **cmd)
+{
+	*cmd = malloc(sizeof(t_cmd));
+	if (!*cmd)
+		return (FAILURE);
+	(*cmd)->arg = NULL;
+	(*cmd)->infile = NULL;
+	(*cmd)->outfile = NULL;
+	(*cmd)->append = 0;
+	(*cmd)->is_builtin = 0;
+	(*cmd)->next = NULL;
+	return (SUCCESS);
+}
+
 void	free_tokenlst(t_token **token_lst)
 {
 	t_token	*aux;

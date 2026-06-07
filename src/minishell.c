@@ -7,8 +7,7 @@ int	main(void)
 	t_cmd	*cmd;
 	int		i;
 
-	cmd = malloc(sizeof(t_cmd));
-	if (!cmd)
+	if (!init_cmd(&cmd))
 		return (1);
 	printf("\033[2J\033[H");
 	printf("Welcome to minishell!\n");
@@ -24,7 +23,6 @@ int	main(void)
 				printf("DEBUG: %s\n", cmd->arg[i++]);
 		}
 		free(str);
-		free_cmd(&cmd);
 		str = readline(prompt);
 	}
 	free(prompt);

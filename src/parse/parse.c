@@ -19,7 +19,18 @@ void	tokenize(const char *input)
 
 t_status	parse(const char *input, t_cmd *cmd)
 {
+	char	**str;
+	int	i;
+
 	tokenize(input);
-	cmd->arg = ft_split(input, ' ');
+	str = ft_split(input, ' ');
+	if (cmd->arg)
+	{
+		i = 0;
+		while (cmd->arg[i])
+			free(cmd->arg[i++]);
+		free(cmd->arg);
+	}
+	cmd->arg = str;
 	return (SUCCESS);
 }

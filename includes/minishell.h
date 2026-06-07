@@ -62,7 +62,9 @@ typedef struct s_token
 
 /*							Parser							*/
 t_status			parse(const char *input, t_cmd *cmd);
+t_status			init_cmd(t_cmd **cmd);
 t_token				*new_token(char *value, t_token_type token_type);
+void	add_token(t_token **list, t_token *new);
 
 void				free_tokenlst(t_token **token_lst);
 void				free_cmd(t_cmd **cmd);
