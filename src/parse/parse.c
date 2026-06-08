@@ -1,28 +1,37 @@
 #include "minishell.h"
 
-void	tokenize(const char *input)
+int	op_count(const char *input)
 {
 	int	i;
-	int	sep;
+	int	count;
 
 	i = 0;
-	sep = 0;
+	count = 0;
 	while (input && input[i])
 	{
-		if (ft_strchr("|<>;", input[i]))
-			sep++;
+		if (input[i] == '>' && input[i+1] && input[i+1] == '>')
+		{
+			count++;
+			i += 2;
+		}
+		else if (input[i] == '<' && input[i+1] && input[i+1] == '<')
+		{
+			count++;
+			i += 2;
+		}
+		else if (ft_strchr("|<>", input[i]))
+			count++;
 		i++;
 	}
-	ft_printf("long i: %d\n", i);
-	ft_printf("long sep: %d\n", sep);
+	return (count);
 }
 
 t_status	parse(const char *input, t_cmd *cmd)
 {
 	char	**str;
 	int	i;
-
-	tokenize(input);
+	
+	ft_printf("operadores: %d\n", op_count(input));
 	str = ft_split(input, ' ');
 	if (cmd->arg)
 	{
