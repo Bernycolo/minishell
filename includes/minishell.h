@@ -39,6 +39,7 @@ typedef enum e_token_type
 	TRUNC,
 	APPEND,
 	INPUT,
+	HEREDOC,
 	PIPE,
 	END
 }					t_token_type;
