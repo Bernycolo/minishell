@@ -30,69 +30,140 @@ void	add_token(t_token **list, t_token *new)
 		*list = new;
 }
 
-void	create_and_add_token(t_token **list, char *value)
+void	create_and_add_token(t_token **list, const char *value, t_token_type type)
 {
 	t_token	*token;
+	char	*token_value;
 
-	token = new_token(ft_strdup(value), type);
-	if (!token)
-		return ;
+	token = NULL;
+	token_value = NULL;
+	if (type == HEREDOC || type == APPEND)
+	{
+		token_value = malloc(3);
+		if (!token_value)
+			return ;
+		ft_strlcpy(token_value, value, 3);
+		token = new_token(token_value, type);
+		if (!token)
+		{
+			free (token_value);
+			return ;
+		}
+	}
+	else if (type == PIPE || type == TRUNC || type == INPUT)
+	{
+		token_value = malloc(2);
+		if (!token)
+			return ;
+		ft_strlcpy(token_value, value, 2);
+		token = new_token(token_value, type);
+		if (!token)
+		{
+			free (token_value);
+			return ;
+		}
+	}
+	else if (type == WORD)
+	{
+		token = new_token(ft_strdup(value), WORD);
+		if (!token)
+			return ;
+	}
 	add_token(list, token);
 }
 
-void	skip_spaces(char *input, int *i)
+void	skip_spaces(const char *input, int *i)
 {
 	while (input && input[*i] == ' ')
-		*i++;
+		*i += 1;
 }
 
-t_status	is_heredoc(char *input, int *i)
+t_status	is_op(const char *input, int i)
+{
+	if (ft_strchr("<>|", input[i]))
+		return (SUCCESS);
+	return (FAILURE);
+}
+
+t_token_type	type_op(const char *input, int *i)
 {
 	if (input[*i] == '<' && input[*i + 1] && input[*i + 1] == '<')
-		return (SUCCESS);
-	return (FAILURE);
+	{
+		*i += 2;
+		return (HEREDOC);
+	}
+	else if (input[*i] == '>' && input[*i + 1] && input[*i + 1] == '>')
+	{
+		*i += 2;
+		return (APPEND);
+	}
+	else if (input[*i] == '|')
+	{
+		*i += 1;
+		return (PIPE);
+	}
+	else if (input[*i] == '<')
+	{
+		*i += 1;
+		return (INPUT);
+	}
+	else
+	{
+		*i += 1;
+		return (TRUNC);
+	}
 }
 
-t_status	is_append(char *input, int *i)
+char	*value_op(t_token_type type)
 {
-	if (input[*i] == '>' && input[*i + 1] && input[*i + 1] == '>')
-		return (SUCCESS);
-	return (FAILURE);
+	if (type == HEREDOC)
+		return ("<<");
+	if (type == APPEND)
+		return (">>");
+	if (type == INPUT)
+		return ("<");
+	if (type == TRUNC)
+		return (">");
+	return ("|");
 }
 
-t_status	ip_op(char *input, int *i)
+t_token	*tokenizer(const char *input)
 {
-	if (ft_strchr("|<>", input[*i]))
-		return (SUCCESS);
-	return (FAILURE);
-}
+	t_token			*list;
+	t_token_type	type;
+	int				i;
+	int				start;
+	int				len_token;
+	char	*word;
 
-t_token	**tokenizer(char *input)
-{
-	t_token	*list;
-	int	i;
-
+	ft_printf("Entra en tokenizer\n");
 	list = NULL;
 	i = 0;
 	while (input && input[i])
 	{
 		skip_spaces(input, &i);
-		if (is_heredoc(input, &i) || is_append(input, &i))
+		if (is_op(input, i))
 		{
-			// crear y añadir token
-			i += 2;
-		} else if (is_op(input, &i))
+			type = type_op(input, &i);
+			create_and_add_token(&list, value_op(type), type);
+		}
+		else
 		{
-			// crear y añadir token
-			create_and_add_token(list, input[i]);
-			i++;
-		} else
-		{
-			i++;
+			start = i;
+			while (input[i] && input[i] != ' ' && !is_op(input, i))
+				i++;
+			len_token = i  - start;
+			word = ft_substr(input, start, len_token);
+			if (word)
+			{
+				create_and_add_token(&list, input, WORD); // crear y añadir token
+				free (word);
+			}
 		}
 	}
+	return (list);
 }
-
+/*
 t_token	*tokenizer(char *input)
 {
 	t_token	*tokens;
@@ -137,3 +208,4 @@ t_token	*tokenizer(char *input)
 	}
 	return (tokens);
 }
+*/

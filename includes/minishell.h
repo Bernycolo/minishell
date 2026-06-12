@@ -17,7 +17,7 @@
 # include <term.h>      // tgetent, tgetflag, tgetnum, tgetstr, tgoto, tputs
 # include <termios.h>   // tcsetattr, tcgetattr
 # include <unistd.h>    // write, read, access, close, fork, execve, dup, dup2,
-			// pipe, isatty, ttyname, ttyslot, getcwd, chdir, unlink
+						// pipe, isatty, ttyname, ttyslot, getcwd, chdir, unlink
 
 # define BLUE "\033[34m" // azul
 # define GRAY "\033[37m" // gris
@@ -33,6 +33,7 @@ typedef enum e_status
 
 typedef enum e_token_type
 {
+	WORD,
 	EMPTY,
 	CMD,
 	ARG,
@@ -65,7 +66,8 @@ typedef struct s_token
 t_status			parse(const char *input, t_cmd *cmd);
 t_status			init_cmd(t_cmd **cmd);
 t_token				*new_token(char *value, t_token_type token_type);
-void	add_token(t_token **list, t_token *new);
+void				add_token(t_token **list, t_token *new);
+t_token				*tokenizer(const char *input);
 
 void				free_tokenlst(t_token **token_lst);
 void				free_cmd(t_cmd **cmd);
