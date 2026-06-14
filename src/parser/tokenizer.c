@@ -1,5 +1,12 @@
 #include "minishell.h"
 
+/**
+ * @brief Create token object
+ * 
+ * @param value 
+ * @param token_type 
+ * @return t_token* 
+ */
 t_token	*new_token(char *value, t_token_type token_type)
 {
 	t_token	*token;
@@ -13,6 +20,12 @@ t_token	*new_token(char *value, t_token_type token_type)
 	return (token);
 }
 
+/**
+ * @brief Add token object
+ * 
+ * @param list 
+ * @param new 
+ */
 void	add_token(t_token **list, t_token *new)
 {
 	t_token	*aux;
@@ -29,7 +42,13 @@ void	add_token(t_token **list, t_token *new)
 	else if (new)
 		*list = new;
 }
-
+/**
+ * @brief Create a and add token object
+ * 
+ * @param list 
+ * @param value 
+ * @param type 
+ */
 void	create_and_add_token(t_token **list, const char *value, t_token_type type)
 {
 	t_token	*token;
@@ -53,7 +72,7 @@ void	create_and_add_token(t_token **list, const char *value, t_token_type type)
 	else if (type == PIPE || type == TRUNC || type == INPUT)
 	{
 		token_value = malloc(2);
-		if (!token)
+		if (!token_value)
 			return ;
 		ft_strlcpy(token_value, value, 2);
 		token = new_token(token_value, type);
@@ -78,13 +97,27 @@ void	skip_spaces(const char *input, int *i)
 		*i += 1;
 }
 
+/**
+ * @brief Check if the input is an operator
+ * 
+ * @param input 
+ * @param i 
+ * @return t_status 
+ */
 t_status	is_op(const char *input, int i)
 {
-	if (ft_strchr("<>|", input[i]))
+	if (input[i] == '<' || input[i] == '>' || input[i] == '|')
 		return (SUCCESS);
 	return (FAILURE);
 }
 
+/**
+ * @brief returns the type of the specified operator
+ * 
+ * @param input 
+ * @param i 
+ * @return t_token_type 
+ */
 t_token_type	type_op(const char *input, int *i)
 {
 	if (input[*i] == '<' && input[*i + 1] && input[*i + 1] == '<')
@@ -114,6 +147,12 @@ t_token_type	type_op(const char *input, int *i)
 	}
 }
 
+/**
+ * @brief Returns the value of the specified operator
+ * 
+ * @param type 
+ * @return char* 
+ */
 char	*value_op(t_token_type type)
 {
 	if (type == HEREDOC)
@@ -127,6 +166,12 @@ char	*value_op(t_token_type type)
 	return ("|");
 }
 
+/**
+ * @brief Build a token's list from the input
+ * 
+ * @param input 
+ * @return t_token* 
+ */
 t_token	*tokenizer(const char *input)
 {
 	t_token			*list;
@@ -136,7 +181,6 @@ t_token	*tokenizer(const char *input)
 	int				len_token;
 	char	*word;
 
-	ft_printf("Entra en tokenizer\n");
 	list = NULL;
 	i = 0;
 	while (input && input[i])
@@ -156,56 +200,10 @@ t_token	*tokenizer(const char *input)
 			word = ft_substr(input, start, len_token);
 			if (word)
 			{
-				create_and_add_token(&list, input, WORD); // crear y añadir token
+				create_and_add_token(&list, word, WORD); // crear y añadir token
 				free (word);
 			}
 		}
 	}
 	return (list);
 }
-/*
-t_token	*tokenizer(char *input)
-{
-	t_token	*tokens;
-	t_token	*token;
-	int		i;
-
-	tokens = NULL;
-	i = 0;
-	while (input && input[i] == ' ')
-		i++;
-	while (input && input[i])
-	{
-		if (input[i] == '<' && input[i + 1] && input[i + 1] == '<')
-		{
-			token = new_token(ft_strdup("<<"), HEREDOC);
-			add_token(&tokens, token);
-			token = NULL;
-			i++;
-		} else if (input[i] == '>' && input[i + 1] && input[i + 1] == '>')
-		{
-			token = new_token(ft_strdup(">>"), APPEND);
-			add_token(&tokens, token);
-			token = NULL;
-			i++;
-		} else if (input[i] == '<')
-		{
-			token = new_token(ft_strdup("<"), INPUT);
-			add_token(&tokens, token);
-			token = NULL;
-		} else if (input[i] == '>')
-		{
-			token = new_token(ft_strdup(">"), TRUNC);
-			add_token(&tokens, token);
-			token = NULL;
-		} else if (input[i] == '|')
-		{
-			token = new_token(ft_strdup("|"), PIPE);
-			add_token(&tokens, token);
-			token = NULL;
-		}
-		i++;
-	}
-	return (tokens);
-}
-*/

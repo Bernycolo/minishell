@@ -48,7 +48,6 @@ t_status	parse(const char *input, t_cmd *cmd)
 	print_token_list(token_list);
 	free_tokenlst(&token_list);
 
-	ft_printf("operadores: %d\n", op_count(input));
 	str = ft_split(input, ' ');
 	if (cmd->arg)
 	{
