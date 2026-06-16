@@ -28,19 +28,18 @@ t_status	init_cmd(t_cmd **cmd)
 void	free_tokenlst(t_token **token_lst)
 {
 	t_token	*aux;
+	t_token	*tmp;
 
 	if (!token_lst || !*token_lst)
 		return ;
 	aux = *token_lst;
-	while (aux->next)
+	while (aux)
 	{
-		*token_lst = aux->next;
+		tmp = aux->next;
 		free(aux->value);
 		free(aux);
-		aux = *token_lst;
+		aux = tmp;
 	}
-	free(aux->value);
-	free(*token_lst);
 	*token_lst = NULL;
 }
 

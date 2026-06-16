@@ -1,13 +1,12 @@
 #include "minishell.h"
 
 /**
-* @brief Creates a new token object
-*
-* @param value The value of the new token
-* @param token_type The type of the new token
-* @return A pointer to the newly created token, or NULL if allocation fails
-*/
-
+ * @brief Creates a new token object
+ *
+ * @param value The value of the new token
+ * @param token_type The type of the new token
+ * @return A pointer to the newly created token, or NULL if allocation fails
+ */
 t_token	*new_token(char *value, t_token_type token_type)
 {
 	t_token	*token;
@@ -22,12 +21,11 @@ t_token	*new_token(char *value, t_token_type token_type)
 }
 
 /**
-* @brief Adds a token object to the end of a list
-*
-* @param list A pointer to the head of the token list
-* @param new The new token to add
-*/
-
+ * @brief Adds a token object to the end of a list
+ *
+ * @param list A pointer to the head of the token list
+ * @param new The new token to add
+ */
 void	add_token(t_token **list, t_token *new)
 {
 	t_token	*aux;
@@ -44,15 +42,16 @@ void	add_token(t_token **list, t_token *new)
 	else if (new)
 		*list = new;
 }
-/**
-* @brief Creates a new token and adds it to the token list
-*
-* @param list A pointer to the head of the token list
-* @param value The value of the new token
-* @param type The type of the new token
-*/
 
-void	create_and_add_token(t_token **list, const char *value, t_token_type type)
+/**
+ * @brief Creates a new token and adds it to the token list
+ *
+ * @param list A pointer to the head of the token list
+ * @param value The value of the new token
+ * @param type The type of the new token
+ */
+void	create_and_add_token(t_token **list, const char *value,
+		t_token_type type)
 {
 	t_token	*token;
 	char	*token_value;
@@ -87,20 +86,23 @@ void	create_and_add_token(t_token **list, const char *value, t_token_type type)
 	}
 	else if (type == WORD)
 	{
-		token = new_token(ft_strdup(value), WORD);
+		token_value = ft_strdup(value);
+		token = new_token(token_value, WORD);
 		if (!token)
+		{
+			free (token_value);
 			return ;
+		}
 	}
 	add_token(list, token);
 }
 
 /**
-* @brief Skips spaces in a string
-*
-* @param input The input string
-* @param i A pointer to the current index
-*/
-
+ * @brief Skips spaces in a string
+ *
+ * @param input The input string
+ * @param i A pointer to the current index
+ */
 void	skip_spaces(const char *input, int *i)
 {
 	while (input && input[*i] == ' ')
@@ -108,13 +110,12 @@ void	skip_spaces(const char *input, int *i)
 }
 
 /**
-* @brief Checks if the character at the given index is an operator
-*
-* @param input The input string
-* @param i The current index to check
-* @return SUCCESS if it is an operator, FAILURE otherwise
-*/
-
+ * @brief Checks if the character at the given index is an operator
+ *
+ * @param input The input string
+ * @param i The current index to check
+ * @return SUCCESS if it is an operator, FAILURE otherwise
+ */
 t_status	is_op(const char *input, int i)
 {
 	if (input[i] == '<' || input[i] == '>' || input[i] == '|')
@@ -123,13 +124,12 @@ t_status	is_op(const char *input, int i)
 }
 
 /**
-* @brief Determines the type of the operator at the given index
-*
-* @param input The input string
-* @param i A pointer to the current index (will be updated)
-* @return The determined token type
-*/
-
+ * @brief Determines the type of the operator at the given index
+ *
+ * @param input The input string
+ * @param i A pointer to the current index (will be updated)
+ * @return The determined token type
+ */
 t_token_type	type_op(const char *input, int *i)
 {
 	if (input[*i] == '<' && input[*i + 1] && input[*i + 1] == '<')
@@ -160,12 +160,11 @@ t_token_type	type_op(const char *input, int *i)
 }
 
 /**
-* @brief Returns the string representation of a specific operator
-*
-* @param type The token type of the operator
-* @return A string literal representing the operator
-*/
-
+ * @brief Returns the string representation of a specific operator
+ *
+ * @param type The token type of the operator
+ * @return A string literal representing the operator
+ */
 char	*value_op(t_token_type type)
 {
 	if (type == HEREDOC)
@@ -178,48 +177,81 @@ char	*value_op(t_token_type type)
 		return (">");
 	return ("|");
 }
-
-char *read_word(const char *input, int *i)
-{
-	int start;
-
-	start = *i;
-	while (input[*i] && input[*i] != ' ' && !is_op(input, *i) && input[*i] != '"' && input[*i] != '\'')
-		(*i)++;
-	return (ft_substr(input, start, *i - start));
-}
-
+/**
+ * @brief Returns the word to create a new token in quotes
+ * 
+ * @param input The input string
+ * @param i A pointer to the current index (will be updated)
+ * @return The string to tokenize
+ */
 char	*read_quoted(const char *input, int *i)
 {
 	char	quote;
-	int	start;
+	int		start;
 	char	*result;
 
-	start = *i;
 	quote = input[*i];
+	start = *i;
+	(*i)++;
 	while (input[*i] && input[*i] != quote)
 		(*i)++;
-	result = ft_substr(input, start, *i - start);
+	if (input[*i] != quote)
+		return (NULL);
 	(*i)++;
+	result = ft_substr(input, start, *i - start);
 	return (result);
+}
+/**
+ * @brief Returns the word to create a new token
+ * 
+ * @param input The input string
+ * @param i A pointer to the current index (will be updated)
+ * @return The string to tokenize 
+ */
+char	*read_word(const char *input, int *i)
+{
+	int		start;
+	char	*word;
+	char	*tmp;
+	char	*join;
+
+	word = NULL;
+	if (input[*i] && input[*i] != ' ' && !is_op(input, *i))
+	{
+		if (input[*i] == '"' || input[*i] == '\'')
+		{
+			tmp = read_quoted(input, i);
+			if (!tmp)
+				return (NULL);
+		}
+		else
+		{
+			start = *i;
+			while (input[*i] && input[*i] != ' ' && !is_op(input, *i)
+				&& input[*i] != '"' && input[*i] != '\'')
+				(*i)++;
+			tmp = ft_substr(input, start, *i - start);
+		}
+		join = ft_strjoin(word, tmp);
+		free(tmp);
+		free(word);
+		word = join;
+	}
+	return (word);
 }
 
 /**
-* @brief Builds a linked list of tokens from the input string
-*
-* @param input The input string to tokenize
-* @return A pointer to the head of the token list
-*/
-
+ * @brief Builds a linked list of tokens from the input string
+ *
+ * @param input The input string to tokenize
+ * @return A pointer to the head of the token list
+ */
 t_token	*tokenizer(const char *input)
 {
 	t_token			*list;
 	t_token_type	type;
 	int				i;
-
-	//	int				start;
-	//	int				len_token;
-	char	*word;
+	char			*word;
 
 	list = NULL;
 	i = 0;
@@ -234,19 +266,14 @@ t_token	*tokenizer(const char *input)
 		else
 		{
 			word = read_word(input, &i);
-			create_and_add_token(&list, ft_strdup(word), WORD);
-			free(word);
-			/*			start = i;
-			while (input[i] && input[i] != ' ' && !is_op(input, i))
-			i++;
-			len_token = i  - start;
-			word = ft_substr(input, start, len_token);
-			if (word)
+			if (!word)
 			{
-			create_and_add_token(&list, ft_strdup(word), WORD);
-			free (word);
+				ft_printf("bash: unexpected EOF while looking for matching `\"\'\n");
+				free_tokenlst(&list);
+				return (NULL);
 			}
-			*/
+			create_and_add_token(&list, word, WORD);
+			free(word);
 		}
 	}
 	return (list);

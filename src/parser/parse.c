@@ -45,10 +45,14 @@ t_status	parse(const char *input, t_cmd *cmd)
 	t_token	*token_list;
 
 	token_list = tokenizer(input);
-	print_token_list(token_list);
-	free_tokenlst(&token_list);
-
+	if (token_list)
+	{
+		print_token_list(token_list);
+		free_tokenlst(&token_list);
+	}
 	str = ft_split(input, ' ');
+	if (!str)
+		return (FAILURE);
 	if (cmd->arg)
 	{
 		i = 0;
