@@ -62,6 +62,13 @@ typedef struct s_token
 	struct s_token	*next;
 }					t_token;
 
+typedef struct s_env
+{
+	char			*key;
+	char			*value;
+	struct s_env		*next;
+}					t_env;
+
 /*							Parser							*/
 t_status			parse(const char *input, t_cmd *cmd);
 t_status			init_cmd(t_cmd **cmd);
@@ -71,5 +78,9 @@ t_token				*tokenizer(const char *input);
 
 void				free_tokenlst(t_token **token_lst);
 void				free_cmd(t_cmd **cmd);
+void				free_env(t_env **env);
+/*							Environment							*/
+void	env_init(t_env **env, char **envp);
+
 
 #endif

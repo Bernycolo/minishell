@@ -74,3 +74,22 @@ void	free_cmd(t_cmd **cmd)
 	}
 	*cmd = NULL;
 }
+
+void	free_env(t_env **env)
+{
+	t_env	*cur;
+	t_env	*next;
+
+	if (!env || !*env)
+		return ;
+	cur = *env;
+	while (cur)
+	{
+		next = cur->next;
+		free (cur->key);
+		free (cur->value);
+		free (cur);
+		cur = next;
+	}
+	*env = NULL;
+}
