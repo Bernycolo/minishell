@@ -14,21 +14,21 @@ int	main(int ac, char **av, char **envp)
 	env = NULL;
 	if (!init_cmd(&cmd))
 		return (1);
-	ft_printf("\033[2J\033[H");
+	printf("\033[2J\033[H");
 	env_init(&env, envp);
-	ft_printf("Welcome to minishell!\n");
+	printf("Welcome to minishell!\n");
 	prompt = ft_strjoin(SOFT_YELLOW "minishell" RESET " % ", GRAY);
 	env_tmp = env;
 	while (env_tmp)
 	{
-		ft_printf("%s \t\t %s\n", env_tmp->key, env_tmp->value);
+		printf("%s \t\t %s\n", env_tmp->key, env_tmp->value);
 		env_tmp = env_tmp->next;
 	}
 	str = readline(prompt);
-	while (str !=NULL && str[0] != 0)
+	while (str != NULL && str[0] != 0)
 	{
 		if (parse(str, cmd))
-		add_history(str);
+			add_history(str);
 		free(str);
 		str = readline(prompt);
 	}

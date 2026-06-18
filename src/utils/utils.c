@@ -2,7 +2,7 @@
 
 /**
  * @brief Initializes a struct cmd
- * 
+ *
  * @param cmd Struct to inicializate
  * @return t_status SUCCESS if it is inicializated, FAILURE otherwise
  */
@@ -21,38 +21,15 @@ t_status	init_cmd(t_cmd **cmd)
 }
 
 /**
- * @brief Frees the memory space occupied by a token list 
- * 
- * @param token_lst A pointer to the head of the token list
- */
-void	free_tokenlst(t_token **token_lst)
-{
-	t_token	*aux;
-	t_token	*tmp;
-
-	if (!token_lst || !*token_lst)
-		return ;
-	aux = *token_lst;
-	while (aux)
-	{
-		tmp = aux->next;
-		free(aux->value);
-		free(aux);
-		aux = tmp;
-	}
-	*token_lst = NULL;
-}
-
-/**
  * @brief Frees the memory space occupied by a command list
- * 
+ *
  * @param cmd A pointer to the head of the command list
  */
 void	free_cmd(t_cmd **cmd)
 {
 	t_cmd	*cur;
 	t_cmd	*next;
-	int	i;
+	int		i;
 
 	if (!cmd || !*cmd)
 		return ;

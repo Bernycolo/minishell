@@ -16,8 +16,8 @@
 # include <term.h>      // tgetent, tgetflag, tgetnum, tgetstr, tgoto, tputs
 # include <termios.h>   // tcsetattr, tcgetattr
 # include <unistd.h>    // write, read, access, close, fork, execve, dup, dup2,
-			// pipe, isatty, ttyname, ttyslot, getcwd, chdir, unlink
-# include "libft.h"
+						// pipe, isatty, ttyname, ttyslot, getcwd, chdir, unlink
+# include "tokenizer.h"
 # include "environment.h"
 
 # define BLUE "\033[34m" // azul
@@ -26,42 +26,15 @@
 # define SOFT_YELLOW "\033[38;5;229m" // amarillo pastel
 # define WARM_GRAY "\033[38;5;245m"   // gris cálido
 
-typedef enum e_status
-{
-	FAILURE,
-	SUCCESS
-}					t_status;
-
-typedef enum e_token_type
-{
-	WORD,
-	EMPTY,
-	CMD,
-	ARG,
-	TRUNC,
-	APPEND,
-	INPUT,
-	HEREDOC,
-	PIPE,
-	END
-}					t_token_type;
-
 typedef struct s_cmd // Estructura para el comando parseado
 {
-	char **arg;         // argumentos del comando
-	char *infile;       // redirección de entrada
-	char *outfile;      // redirección de salida
-	int append;         // si es >> o >
-	int is_builtin;     // si es builtin
-	struct s_cmd *next; // siguiente comando del pipe
+	char	**arg;		// argumentos del comando
+	char	*infile;	// redirección de entrada
+	char	*outfile;	// redirección de salida
+	int		append;		// si es >> o >
+	int		is_builtin;	// si es builtin
+	struct s_cmd	*next;
 }					t_cmd;
-
-typedef struct s_token
-{
-	char			*value;
-	t_token_type	type;
-	struct s_token	*next;
-}					t_token;
 
 /*							Parser							*/
 t_status			parse(const char *input, t_cmd *cmd);
@@ -72,6 +45,5 @@ t_token				*tokenizer(const char *input);
 
 void				free_tokenlst(t_token **token_lst);
 void				free_cmd(t_cmd **cmd);
-void				free_env(t_env **env);
 
 #endif

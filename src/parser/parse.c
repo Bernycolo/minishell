@@ -9,12 +9,12 @@ int	op_count(const char *input)
 	count = 0;
 	while (input && input[i])
 	{
-		if (input[i] == '>' && input[i+1] && input[i+1] == '>')
+		if (input[i] == '>' && input[i + 1] && input[i + 1] == '>')
 		{
 			count++;
 			i += 2;
 		}
-		else if (input[i] == '<' && input[i+1] && input[i+1] == '<')
+		else if (input[i] == '<' && input[i + 1] && input[i + 1] == '<')
 		{
 			count++;
 			i += 2;
@@ -29,11 +29,24 @@ int	op_count(const char *input)
 void	print_token_list(t_token *token_list)
 {
 	t_token	*token;
+	char	*type_op;
 
+	type_op = NULL;
 	token = token_list;
 	while (token)
 	{
-		ft_printf("value: %s \t type: %d \n", token->value, token->type);
+		if (token->type == WORD)
+			type_op = ft_strdup("WORD");
+		if (token->type == TRUNC)
+			type_op = ft_strdup("TRUNC");
+		if (token->type == INPUT)
+			type_op = ft_strdup("INPUT");
+		if (token->type == HEREDOC)
+			type_op = ft_strdup("HEREDOC");
+		if (token->type == PIPE)
+			type_op = ft_strdup("PIPE");
+		printf("value: %s \t type: %s \n", token->value, type_op);
+		free (type_op);
 		token = token->next;
 	}
 }
@@ -41,8 +54,8 @@ void	print_token_list(t_token *token_list)
 t_status	parse(const char *input, t_cmd *cmd)
 {
 	char	**str;
-	int	i;
 	t_token	*token_list;
+	int		i;
 
 	token_list = tokenizer(input);
 	if (token_list)
