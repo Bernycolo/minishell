@@ -41,6 +41,8 @@ void	print_token_list(t_token *token_list)
 			type_op = ft_strdup("TRUNC");
 		if (token->type == INPUT)
 			type_op = ft_strdup("INPUT");
+		if (token->type == APPEND)
+			type_op = ft_strdup("APPEND");
 		if (token->type == HEREDOC)
 			type_op = ft_strdup("HEREDOC");
 		if (token->type == PIPE)
