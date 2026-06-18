@@ -1,7 +1,6 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-# include "libft.h"
 # include <dirent.h> // opendir, readdir, closedir
 # include <fcntl.h>  // open
 # include <limits.h>
@@ -17,7 +16,9 @@
 # include <term.h>      // tgetent, tgetflag, tgetnum, tgetstr, tgoto, tputs
 # include <termios.h>   // tcsetattr, tcgetattr
 # include <unistd.h>    // write, read, access, close, fork, execve, dup, dup2,
-						// pipe, isatty, ttyname, ttyslot, getcwd, chdir, unlink
+			// pipe, isatty, ttyname, ttyslot, getcwd, chdir, unlink
+# include "libft.h"
+# include "environment.h"
 
 # define BLUE "\033[34m" // azul
 # define GRAY "\033[37m" // gris
@@ -62,13 +63,6 @@ typedef struct s_token
 	struct s_token	*next;
 }					t_token;
 
-typedef struct s_env
-{
-	char			*key;
-	char			*value;
-	struct s_env		*next;
-}					t_env;
-
 /*							Parser							*/
 t_status			parse(const char *input, t_cmd *cmd);
 t_status			init_cmd(t_cmd **cmd);
@@ -79,8 +73,5 @@ t_token				*tokenizer(const char *input);
 void				free_tokenlst(t_token **token_lst);
 void				free_cmd(t_cmd **cmd);
 void				free_env(t_env **env);
-/*							Environment							*/
-void	env_init(t_env **env, char **envp);
-
 
 #endif

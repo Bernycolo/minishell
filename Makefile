@@ -14,7 +14,7 @@ GREEN = \033[0;32m
 RESET = \033[0m
 
 # Files
-SRC = minishell.c parser/parse.c parser/tokenizer.c env/env.c utils/utils.c
+SRC = minishell.c parser/parse.c parser/tokenizer.c env/env.c env/env_utils.c utils/utils.c
 OBJ = $(SRC:%.c=$(OBJ_DIR)/%.o)
 DEP = $(OBJ:.o=.d)
 
