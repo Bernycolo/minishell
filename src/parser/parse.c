@@ -1,4 +1,5 @@
 #include "minishell.h"
+#include "libft.h"
 
 int	op_count(const char *input)
 {

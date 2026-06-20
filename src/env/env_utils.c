@@ -1,4 +1,5 @@
 #include "environment.h"
+#include "libft.h"
 
 /**
  * @brief Gets the value of a key from the environment list

@@ -1,4 +1,5 @@
 #include "environment.h"
+#include "libft.h"
 
 /**
  * @brief Creates a new node of environment list

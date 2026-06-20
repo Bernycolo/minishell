@@ -1,8 +1,21 @@
+/**
+ * @file environment.h
+ * @author bconejo-
+ * @brief Environment variable management for minishell
+ * @version 0.1
+ * @date 2026-06-20
+ * 
+ * @copyright Copyright (c) 2026
+ * 
+ */
+
 #ifndef ENVIRONMENT_H
 # define ENVIRONMENT_H
 
-# include "libft.h"
-
+/**
+ * @brief Node of the environment linked list
+ * 
+ */
 typedef struct s_env
 {
 	char			*key;

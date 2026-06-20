@@ -1,3 +1,14 @@
+/**
+ * @file minishell.h
+ * @author bconejo-
+ * @brief 
+ * @version 0.1
+ * @date 2026-06-20
+ * 
+ * @copyright Copyright (c) 2026
+ * 
+ */
+
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
@@ -26,7 +37,11 @@
 # define SOFT_YELLOW "\033[38;5;229m" // amarillo pastel
 # define WARM_GRAY "\033[38;5;245m"   // gris cálido
 
-typedef struct s_cmd // Estructura para el comando parseado
+/**
+ * @brief Represents a node in the command linked list
+ * 
+ */
+typedef struct s_cmd
 {
 	char	**arg;		// argumentos del comando
 	char	*infile;	// redirección de entrada
@@ -36,14 +51,10 @@ typedef struct s_cmd // Estructura para el comando parseado
 	struct s_cmd	*next;
 }					t_cmd;
 
-/*							Parser							*/
+/*					Parser							*/
 t_status			parse(const char *input, t_cmd *cmd);
-t_status			init_cmd(t_cmd **cmd);
-t_token				*new_token(char *value, t_token_type token_type);
-void				add_token(t_token **list, t_token *new);
-t_token				*tokenizer(const char *input);
 
-void				free_tokenlst(t_token **token_lst);
+t_status			init_cmd(t_cmd **cmd);
 void				free_cmd(t_cmd **cmd);
 
 #endif

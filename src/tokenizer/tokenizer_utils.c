@@ -1,4 +1,5 @@
 #include "tokenizer.h"
+#include "libft.h"
 
 /**
  * @brief Creates a new token object
