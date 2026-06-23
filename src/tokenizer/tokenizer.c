@@ -1,6 +1,4 @@
-#include "tokenizer.h"
-#include <stdio.h>
-#include <stdlib.h>
+#include "minishell.h"
 
 /**
  * @brief Skips spaces in a string

@@ -1,29 +1,7 @@
-/**
- * @file tokenizer.h
- * @author bconejo-
- * @brief Tokenizer module for minishell
- * @version 0.1
- * @date 2026-06-20
- * 
- * @copyright Copyright (c) 2026
- * 
- */
-
 #ifndef TOKENIZER_H
 # define TOKENIZER_H
 
-/**
- * @enum e_status
- * @brief Generic success/failure status used across the project
- * 
- * This enumeration is used as a return value to indicate whether an operation
- * completed successfully or encountered an error
- */
-typedef enum e_status
-{
-	FAILURE,
-	SUCCESS
-}					t_status;
+# include "structs.h"
 
 /**
  * @enum e_token_type

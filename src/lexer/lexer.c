@@ -1,6 +1,11 @@
-#include "tokenizer.h"
-#include <stddef.h>
+#include "minishell.h"
 
+/**
+ * @brief Checks the token's type of the head of the token's list
+ * 
+ * @param token The token to check
+ * @return SUCCESS if the token is not an operator, FAILURE otherwise 
+ */
 t_status	check_first_token(t_token *token)
 {
 	if (token->type == PIPE || token->type == INPUT || token->type == TRUNC
@@ -9,6 +14,13 @@ t_status	check_first_token(t_token *token)
 	return (SUCCESS);
 }
 
+/**
+ * @brief Checks if its a PIPE and the next token  
+ * 
+ * @param token The token to check
+ * @return SUCCESS if the token is a PIPE and the next token is not,
+ * FAILURE otherwise 
+ */
 t_status	check_pipe(t_token *token)
 {
 	if (token->type == PIPE && token->next == NULL)
@@ -23,6 +35,12 @@ t_status	check_pipe(t_token *token)
 	return (SUCCESS);
 }
 
+/**
+ * @brief 
+ * 
+ * @param token 
+ * @return t_status 
+ */
 t_status	check_redir(t_token *token)
 {
 	if (token->type == INPUT || token->type == TRUNC || token->type == HEREDOC
@@ -36,12 +54,12 @@ t_status	check_redir(t_token *token)
 	return (SUCCESS);
 }
 
-t_status	check_op_secuence(t_token *token)
-{
-	(void)*token;
-	return (SUCCESS);
-}
-
+/**
+ * @brief 
+ * 
+ * @param token 
+ * @return t_status 
+ */
 t_status	check_last_token(t_token *token)
 {
 	if (token->type == PIPE || token->type == INPUT || token->type == TRUNC
@@ -50,6 +68,12 @@ t_status	check_last_token(t_token *token)
 	return (SUCCESS);
 }
 
+/**
+ * @brief 
+ * 
+ * @param token 
+ * @return t_status 
+ */
 t_status	lexer_validate(t_token *token)
 {
 	if (!check_first_token(token))
@@ -59,8 +83,6 @@ t_status	lexer_validate(t_token *token)
 		if (!check_pipe(token))
 			return (FAILURE);
 		if (!check_redir(token))
-			return (FAILURE);
-		if (!check_op_secuence(token))
 			return (FAILURE);
 		token = token->next;
 	}
