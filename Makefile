@@ -15,7 +15,7 @@ RESET = \033[0m
 
 # Files
 SRC = 	parser/parse.c \
-		tokenizer/tokenizer.c tokenizer/tokenizer_utils.c tokenizer/read_word.c \
+		tokenizer/tokenizer.c tokenizer/tokenizer_utils.c tokenizer/read_word.c tokenizer/lexer_valide.c \
 		env/env.c env/env_utils.c \
 		utils/utils.c \
 		minishell.c

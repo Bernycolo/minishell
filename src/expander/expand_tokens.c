@@ -1,0 +1,1 @@
+/* Recorre la lista de tokens y expande solo los WORD. */

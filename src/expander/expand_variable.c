@@ -1,0 +1,1 @@
+/* Extrae el nombre de la variable y devuelve su valor. */

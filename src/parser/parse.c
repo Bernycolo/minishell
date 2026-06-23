@@ -56,16 +56,21 @@ void	print_token_list(t_token *token_list)
 
 t_status	parse(const char *input, t_cmd *cmd)
 {
-	char	**str;
 	t_token	*token_list;
-	int		i;
 
+	(void)*cmd;
 	token_list = tokenizer(input);
 	if (token_list)
 	{
-		print_token_list(token_list);
+		if (lexer_validate(token_list))
+			print_token_list(token_list);
+		else
+			printf("Error: syntax error!\n");
 		free_tokenlst(&token_list);
 	}
+	else
+		return (FAILURE);
+/*
 	str = ft_split(input, ' ');
 	if (!str)
 		return (FAILURE);
@@ -77,5 +82,6 @@ t_status	parse(const char *input, t_cmd *cmd)
 		free(cmd->arg);
 	}
 	cmd->arg = str;
+*/
 	return (SUCCESS);
 }

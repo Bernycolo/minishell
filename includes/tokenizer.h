@@ -69,4 +69,6 @@ void				create_and_add_token(t_token **list, const char *value,
 void				free_tokenlst(t_token **token_lst);
 t_token				*tokenizer(const char *input);
 
+t_status			lexer_validate(t_token *token);
+
 #endif

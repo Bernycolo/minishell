@@ -40,6 +40,16 @@ static char	*read_quoted(const char *input, int *i)
 	return (result);
 }
 
+char	*ft_strjoin_free(char *s1, char *s2)
+{
+	char	*join;
+
+	join = ft_strjoin(s1, s2);
+	free (s1);
+	free (s2);
+	return (join);
+}
+
 /**
  * @brief Returns the word to create a new token
  * 
@@ -51,19 +61,26 @@ char	*read_word(const char *input, int *i)
 {
 	int		start;
 	char	*word;
+	char	*tmp;
 
-	word = NULL;
-	if (input[*i] && input[*i] != ' ' && !is_op(input, *i))
+	word = ft_strdup("");
+	while (input[*i] && input[*i] != ' ' && !is_op(input, *i))
 	{
 		if (input[*i] == '"' || input[*i] == '\'')
-			word = read_quoted(input, i);
+		{
+			tmp = read_quoted(input, i);
+			if (!tmp)
+				return (free(word), NULL);
+			word = ft_strjoin_free(word, tmp);
+		}
 		else
 		{
 			start = *i;
 			while (input[*i] && input[*i] != ' ' && !is_op(input, *i)
 				&& input[*i] != '"' && input[*i] != '\'')
 				(*i)++;
-			word = ft_substr(input, start, *i - start);
+			tmp = ft_substr(input, start, *i - start);
+			word = ft_strjoin_free(word, tmp);
 		}
 	}
 	return (word);
