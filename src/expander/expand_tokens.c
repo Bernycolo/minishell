@@ -1,28 +1,58 @@
 /* Recorre la lista de tokens y expande solo los WORD. */
 
-#include "tokenizer.h"
-#include <stddef.h>
+#include "minishell.h"
 
-t_token	*expand_word(t_token *token)
+char	*expand_word(char *value, t_env *env, int last_status)
 {
-	int	i;
+	int		i;
 
 	i = 0;
-	while (token->value[i])
+	while (value[i])
 	{
-		if (token->value[i] == '$')
-			expand_variable(token);
+		if (value[i] == '$')
+			expand_variable();
 		i++;
 	}
 }
 
-t_status	expand_tokens(t_token *token)
+static t_token	*del_token(t_token **list, t_token *prev, t_token *curr)
 {
-	while (token && token->next)
+	t_token	*next;
+
+	if (!list || !*list || !curr)
+		return (NULL);
+	next = curr->next;
+	if (prev == NULL)
+		*list = next;
+	else
+		prev->next = next;
+	free (curr->value);
+	free (curr);
+	return (next);
+}
+
+void	expand_tokens(t_token **list, t_env *env, int last_status)
+{
+	char	*word;
+	t_token	*curr;
+	t_token	*prev;
+
+	curr = *list;
+	prev = NULL;
+	while (curr)
 	{
-		if (token->type == WORD)
-			expand_word(token);
-		token = token->next;
+		if (curr->type == WORD && !(prev && prev->type == HEREDOC))
+		{
+			word = expand_word(curr->value, env, last_status);
+			if (!word || !word[0])
+			{
+				curr = del_token(list, prev, curr);
+				continue ;
+			}
+			free (curr->value);
+			curr->value = word;
+		}
+		prev = curr;
+		curr = curr->next;
 	}
-	return (SUCCESS);
 }

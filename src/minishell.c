@@ -13,7 +13,7 @@ int	main(int ac, char **av, char **envp)
 	env = NULL;
 	if (!init_cmd(&cmd))
 		return (1);
-	printf("\033[2J\033[H");
+	printf("\033[3J\033[2J\033[H");
 	env_init(&env, envp);
 	printf("Welcome to minishell!\n");
 	prompt = ft_strjoin(SOFT_YELLOW "minishell" RESET " % ", GRAY);
