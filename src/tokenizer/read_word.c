@@ -40,6 +40,13 @@ static char	*read_quoted(const char *input, int *i)
 	return (result);
 }
 
+/**
+ * @brief Joins two strings and free the allocated memory of these
+ * 
+ * @param s1 The string one
+ * @param s2 The string two
+ * @return char* The join of the two strings
+ */
 char	*ft_strjoin_free(char *s1, char *s2)
 {
 	char	*join;

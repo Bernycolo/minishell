@@ -45,6 +45,7 @@ char				*read_word(const char *input, int *i);
 void				create_and_add_token(t_token **list, const char *value,
 						t_token_type type);
 void				free_tokenlst(t_token **token_lst);
+char				*ft_strjoin_free(char *s1, char *s2);
 t_token				*tokenizer(const char *input);
 
 t_status			lexer_validate(t_token *token);
