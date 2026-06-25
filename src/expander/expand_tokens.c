@@ -1,6 +1,5 @@
-/* Recorre la lista de tokens y expande solo los WORD. */
-
 #include "minishell.h"
+#include "libft.h"
 
 /**
  * @brief Extracts the text between single quotes
@@ -12,7 +11,15 @@
 char	*extract_single_quoted(char *value, int *index)
 {
 	char	*result;
+	int		start;
 
+	(*index)++;
+	start = *index;
+	while (value[*index] && value[*index] != '\'')
+		*index++;
+	result = ft_substr(value, start, *index - start);
+	if (value[*index] == '\'')
+		*index++;
 	return (result);
 }
 
@@ -23,10 +30,30 @@ char	*extract_single_quoted(char *value, int *index)
  * @param index A pointer to an index
  * @return The extracted text
  */
-char	*extract_double_quoted(char *value, int *index)
+char	*extract_double_quoted(char *value, int *index, t_env *env, int last_status)
 {
 	char	*result;
+	char	*fragment;
+	int		start;
 
+	(*index)++;
+	result = ft_strdup("");
+	while (value[*index] && value[*index] != '"')
+	{
+		if (value[*index] == '$')
+			fragment = expand_variable(value, index, env, last_status);
+		else
+		{
+			start = *index;
+			while (value[*index] && value[*index] != '"'
+				&& value[*index] != '$')
+				(*index)++;
+			fragment = ft_substr(value, start, *index - start);
+		}
+		result = ft_strjoin_free(result, fragment);
+	}
+	if (value[*index] == '"')
+		(*index)++;
 	return (result);
 }
 
@@ -56,7 +83,13 @@ char	*expand_variable(char *value, int *index, t_env *env, int last_status)
 char	*extract_plain_text(char *value, int *index)
 {
 	char	*result;
+	int		start;
 
+	start = *index;
+	while (value[*index] && value[*index] != '\'' && value[*index] != '"'
+		&& value[*index] != '$')
+		(*index)++;
+	result = ft_substr(value, start, *index - start);
 	return (result);
 }
 
@@ -70,7 +103,6 @@ char	*extract_plain_text(char *value, int *index)
  */
 char	*expand_word(char *value, t_env *env, int last_status)
 {
-
 	int		i;
 	char	*result;
 	char	*fragment;
@@ -82,12 +114,12 @@ char	*expand_word(char *value, t_env *env, int last_status)
 		if (value[i] == '\'')
 			fragment = extract_single_quoted(value, &i);
 		else if (value[i] == '"')
-			fragment = extract_double_quoted(value, &i);
+			fragment = extract_double_quoted(value, &i, env, last_status);
 		else if (value[i] == '$')
 			fragment = expand_variable(value, &i, env, last_status);
 		else
 			fragment = extract_plain_text(value, &i);
-		result = ft_strjoin_free(result, fragment);		
+		result = ft_strjoin_free(result, fragment);
 	}
 	return (result);
 }
