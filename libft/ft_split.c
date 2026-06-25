@@ -6,7 +6,7 @@
 /*   By: bconejo- <bconejo-@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 11:16:45 by bconejo-          #+#    #+#             */
-/*   Updated: 2026/04/26 16:54:33 by bconejo-         ###   ########.fr       */
+/*   Updated: 2026/06/25 20:22:40 by bconejo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,17 @@ static char	**copy_words(char **dst, char const *src, int n_words, char sep)
 	return (dst);
 }
 
+/**
+ * @brief Reserves an array of strings resulting from splitting the string 's'
+ * into substrings using the character 'c' as a delimiter
+ * The array must end with a NULL pointer
+ * 
+ * @param s The string to split
+ * @param c The delimiting character
+ * @return The array of new strings resulting from the separation
+ * 
+ * NULL if memory reservation fails
+ */
 char	**ft_split(char const *s, char c)
 {
 	char	**split;

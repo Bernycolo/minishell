@@ -6,7 +6,7 @@
 /*   By: bconejo- <bconejo-@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 18:51:30 by bconejo-          #+#    #+#             */
-/*   Updated: 2025/05/19 13:37:09 by bconejo-         ###   ########.fr       */
+/*   Updated: 2026/06/25 20:26:23 by bconejo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,15 @@ static int	length(int n)
 	return (i);
 }
 
+/**
+ * @brief Generates a string that represents the integer value received as
+ * an argument
+ * 
+ * @param n The Integer to be converted
+ * @return The string that represents the number
+ * 
+ * NULL if memory reservation fails 
+ */
 char	*ft_itoa(int n)
 {
 	char			*str;

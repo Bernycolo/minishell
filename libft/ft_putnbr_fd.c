@@ -6,12 +6,18 @@
 /*   By: bconejo- <bconejo-@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 01:26:33 by bconejo-          #+#    #+#             */
-/*   Updated: 2025/05/20 17:27:27 by bconejo-         ###   ########.fr       */
+/*   Updated: 2026/06/25 21:12:00 by bconejo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
+/**
+ * @brief Sends the number 'n' to the given file descriptor
+ * 
+ * @param n The number to send
+ * @param fd The file descriptor to write to
+ */
 void	ft_putnbr_fd(int n, int fd)
 {
 	char	c;

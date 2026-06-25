@@ -6,7 +6,7 @@
 /*   By: bconejo- <bconejo-@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 18:32:10 by bconejo-          #+#    #+#             */
-/*   Updated: 2025/05/13 17:38:55 by bconejo-         ###   ########.fr       */
+/*   Updated: 2026/06/25 20:22:31 by bconejo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,17 @@ static int	checkin(char c, const char *str)
 	return (0);
 }
 
+/**
+ * @brief Remove all characters from the string 'set' from the beginning and
+ * from the end of 's1', until find a character not belonging to 'set'. The
+ * resulting string is returned with a reservation of malloc
+ * 
+ * @param s1 The string to be trimmed
+ * @param set The characters to remove from the string
+ * @return The shortened string
+ * 
+ * NULL if memory reservation fails
+ */
 char	*ft_strtrim(char const *s1, char const *set)
 {
 	char	*dst;

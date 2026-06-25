@@ -6,12 +6,24 @@
 /*   By: bconejo- <bconejo-@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 13:19:48 by bconejo-          #+#    #+#             */
-/*   Updated: 2025/05/15 20:29:51 by bconejo-         ###   ########.fr       */
+/*   Updated: 2026/06/25 20:26:41 by bconejo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
+/**
+ * @brief Reserves and returns a substring of the string 's'
+ * The substring starts at index 'start' and has a maximum length of 'len'
+ * 
+ * @param s The string from which to create the substring
+ * @param start The index of the character in 's'
+ * from which to start the substring
+ * @param len The maximum length of the substring
+ * @return The resulting substring
+ * 
+ * NULL if memory reservation fails
+ */
 char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
 	char	*str;

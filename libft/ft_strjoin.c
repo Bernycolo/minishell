@@ -6,12 +6,22 @@
 /*   By: bconejo- <bconejo-@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 17:44:21 by bconejo-          #+#    #+#             */
-/*   Updated: 2026/03/27 02:15:31 by bconejo-         ###   ########.fr       */
+/*   Updated: 2026/06/25 20:26:34 by bconejo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
+/**
+ * @brief Reserve and return a new string, formed by the concatenation
+ * of 's1' and 's2'
+ * 
+ * @param s1 The first string
+ * @param s2 The string to add to 's1'
+ * @return The new string
+ * 
+ * NULL if memory reservation fails
+ */
 char	*ft_strjoin(char const *s1, char const *s2)
 {
 	int		i;
