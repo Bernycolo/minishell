@@ -17,7 +17,7 @@ char	*env_get(t_env *env, const char *key)
 	{
 		if (ft_strlen(key) == ft_strlen(aux->key) && ft_strncmp(key, aux->key,
 				ft_strlen(key)) == 0)
-			return (aux->value);
+			return (ft_strdup(aux->value));
 		aux = aux->next;
 	}
 	return (NULL);

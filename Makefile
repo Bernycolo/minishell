@@ -18,6 +18,7 @@ SRC = 	parser/parse.c \
 		tokenizer/tokenizer.c tokenizer/tokenizer_utils.c tokenizer/read_word.c \
 		lexer/lexer.c \
 		env/env.c env/env_utils.c \
+		expander/expand_tokens.c \
 		utils/utils.c \
 		minishell.c
 OBJ = $(SRC:%.c=$(OBJ_DIR)/%.o)

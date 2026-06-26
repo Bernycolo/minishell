@@ -5,55 +5,22 @@
  * @brief Extracts the text between single quotes
  * 
  * @param value The text with single quotes
- * @param index A pointer to an index
+ * @param i A pointer to an index
  * @return The extracted text
  */
-char	*extract_single_quoted(char *value, int *index)
+char	*extract_single_quoted(char *value, int *i)
 {
 	char	*result;
 	int		start;
 
-	(*index)++;
-	start = *index;
-	while (value[*index] && value[*index] != '\'')
-		*index++;
-	result = ft_substr(value, start, *index - start);
-	if (value[*index] == '\'')
-		*index++;
-	return (result);
-}
-
-/**
- * @brief Extracts the text between double quotes
- * 
- * @param value The text with double quotes
- * @param index A pointer to an index
- * @return The extracted text
- */
-char	*extract_double_quoted(char *value, int *index, t_env *env, int last_status)
-{
-	char	*result;
-	char	*fragment;
-	int		start;
-
-	(*index)++;
-	result = ft_strdup("");
-	while (value[*index] && value[*index] != '"')
-	{
-		if (value[*index] == '$')
-			fragment = expand_variable(value, index, env, last_status);
-		else
-		{
-			start = *index;
-			while (value[*index] && value[*index] != '"'
-				&& value[*index] != '$')
-				(*index)++;
-			fragment = ft_substr(value, start, *index - start);
-		}
-		result = ft_strjoin_free(result, fragment);
-	}
-	if (value[*index] == '"')
-		(*index)++;
+	result = NULL;
+	(*i)++;
+	start = *i;
+	while (value[*i] && value[*i] != '\'')
+		(*i)++;
+	result = ft_substr(value, start, *i - start);
+	if (value[*i] == '\'')
+		(*i)++;
 	return (result);
 }
 
@@ -61,15 +28,70 @@ char	*extract_double_quoted(char *value, int *index, t_env *env, int last_status
  * @brief Expands the value of a environment variable
  * 
  * @param value The key of the variable
- * @param index A pointer to an index
+ * @param i A pointer to an index
  * @param env The environment list
  * @param last_status The last state returned by the system
  * @return The expanded text 
  */
-char	*expand_variable(char *value, int *index, t_env *env, int last_status)
+char	*expand_variable(char *value, int *i, t_env *env, int last_status)
 {
 	char	*result;
+	char	*name;
+	int		start;
 
+	result = NULL;
+	name = NULL;
+	(*i)++;
+	if (value[*i] == '?')
+	{
+		result = ft_itoa(last_status);
+		(*i)++;
+	}
+	else if (value[*i] == '_' || ft_isalpha(value[*i]))
+	{
+		start = *i;
+		while (ft_isalnum(value[*i]) || value[*i] == '_')
+			(*i)++;
+		name = ft_substr(value, start, *i - start);
+		result = env_get(env, name);
+		free(name);
+	}
+	else
+		result = ft_strdup("$");
+	return (result);
+}
+
+/**
+ * @brief Extracts the text between double quotes
+ * 
+ * @param value The text with double quotes
+ * @param i A pointer to an index
+ * @return The extracted text
+ */
+char	*extract_double_quoted(char *value, int *i, t_env *env, int last_status)
+{
+	char	*result;
+	char	*fragment;
+	int		start;
+
+	(*i)++;
+	result = ft_strdup("");
+	while (value[*i] && value[*i] != '"')
+	{
+		if (value[*i] == '$')
+			fragment = expand_variable(value, i, env, last_status);
+		else
+		{
+			start = *i;
+			while (value[*i] && value[*i] != '"'
+				&& value[*i] != '$')
+				(*i)++;
+			fragment = ft_substr(value, start, *i - start);
+		}
+		result = ft_strjoin_free(result, fragment);
+	}
+	if (value[*i] == '"')
+		(*i)++;
 	return (result);
 }
 
@@ -77,29 +99,29 @@ char	*expand_variable(char *value, int *index, t_env *env, int last_status)
  * @brief Extracts the plain text until find quotation marks or $
  * 
  * @param value The source text
- * @param index A pointer to an index
+ * @param i A pointer to an index
  * @return The extracted text
  */
-char	*extract_plain_text(char *value, int *index)
+char	*extract_plain_text(char *value, int *i)
 {
 	char	*result;
 	int		start;
 
-	start = *index;
-	while (value[*index] && value[*index] != '\'' && value[*index] != '"'
-		&& value[*index] != '$')
-		(*index)++;
-	result = ft_substr(value, start, *index - start);
+	start = *i;
+	while (value[*i] && value[*i] != '\'' && value[*i] != '"'
+		&& value[*i] != '$')
+		(*i)++;
+	result = ft_substr(value, start, *i - start);
 	return (result);
 }
 
 /**
- * @brief 
+ * @brief Expands the content of token type WORD
  * 
- * @param value 
- * @param env 
+ * @param value The content to expand
+ * @param env The environment list
  * @param last_status The last state returned by the system
- * @return char* 
+ * @return The token's content expanded
  */
 char	*expand_word(char *value, t_env *env, int last_status)
 {
@@ -170,6 +192,8 @@ void	expand_tokens(t_token **list, t_env *env, int last_status)
 			word = expand_word(curr->value, env, last_status);
 			if (!word || !word[0])
 			{
+				if (word)
+					free(word);
 				curr = del_token(list, prev, curr);
 				continue ;
 			}

@@ -20,7 +20,7 @@ int	main(int ac, char **av, char **envp)
 	str = readline(prompt);
 	while (str != NULL && str[0] != 0)
 	{
-		if (parse(str, cmd))
+		if (parse(str, cmd, env))
 			add_history(str);
 		free(str);
 		str = readline(prompt);

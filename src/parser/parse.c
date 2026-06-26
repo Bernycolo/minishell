@@ -54,16 +54,22 @@ void	print_token_list(t_token *token_list)
 	}
 }
 
-t_status	parse(const char *input, t_cmd *cmd)
+t_status	parse(const char *input, t_cmd *cmd, t_env *env)
 {
 	t_token	*token_list;
 
-	(void)*cmd;
+	(void)cmd;
+	(void)env;
 	token_list = tokenizer(input);
 	if (token_list)
 	{
 		if (lexer_validate(token_list))
+		{
 			print_token_list(token_list);
+			printf("\n\n\n\n");
+			expand_tokens(&token_list, env, 0);
+			print_token_list(token_list);
+		}
 		else
 			printf("Error: syntax error!\n");
 		free_tokenlst(&token_list);

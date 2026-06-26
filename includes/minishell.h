@@ -21,6 +21,7 @@
 # include "structs.h"
 # include "environment.h"
 # include "tokenizer.h"
+# include "expander.h"
 # include "cmd.h"
 # include "status.h"
 # include "shell.h"
@@ -32,7 +33,7 @@
 # define WARM_GRAY "\033[38;5;245m"   // gris cálido
 
 /*					Parser							*/
-t_status			parse(const char *input, t_cmd *cmd);
+t_status			parse(const char *input, t_cmd *cmd, t_env *env);
 
 t_status			init_cmd(t_cmd **cmd);
 void				free_cmd(t_cmd **cmd);
