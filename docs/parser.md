@@ -1,320 +1,330 @@
-# Pasos a realizar en el parseo de una línea de comando 
+## Parse_tokens
 
-## PASO 1 — Tokenizer (separar palabras y operadores)
+### Introducción
 
-El parser no empieza hasta que el tokenizer termina.
-
-<u>El **tokenizer** debe:</u>
-
-- saltar espacios
-- separar palabras
-- separar operadores (|, <, >, <<, >>)
-- respetar comillas
-- NO expandir variables
-- NO quitar comillas
-- NO validar sintaxis
-
-<u>**Salida:**</u> lista de tokens.
-
-<u>**Entrada:**</u>>
-
-```bash
-echo "hola mundo" | wc -l >> out.txt
-```
-
-Tokenizer produce:
-
-```text
-[WORD:"echo"]
-[WORD:""hola mundo""]
-[PIPE:"|"]
-[WORD:"wc"]
-[WORD:"-l"]
-[REDIR_APPEND:">>"]
-[WORD:"out.txt"]
-```
-
-## PASO 2 — Validación léxica (errores básicos)
-
-<u>**Aquí detectas errores que el tokenizer no puede detectar:**</u>
-
-- comillas sin cerrar
-- operadores inválidos (>>>, ><, ||, |>, etc.)
-- redirecciones sin palabra después
-- pipeline empezando o terminando en |
-
-Ejemplos de errores:
-
-```bash
-echo "hola
-cmd >> > out
-| ls
-```
-
-Esto **NO** construye t_cmd todavía.
-
-
-## PASO 3 — Expansión de variables ($VAR)
-
-<u>**Ahora sí:**</u>
-
-- expandes $HOME, $USER, $?, etc.
-- respetas comillas simples (no expanden)
-- expandes dentro de comillas dobles
-- expandes fuera de comillas
-
-**Ejemplo:**
-
-```bash
-echo "$USER"
-
-→ "bernardo"
-```
-
-**Salida:** tokens con valores expandidos.
-
-## PASO 4 — Eliminación de comillas
-
-Ahora quitas las comillas del valor del token, pero sin romper el contenido.
-
-**Ejemplo:**
-
-Token:
-```"hola mundo"``` → ```hola mundo```
-
-Esto es importante porque argv no debe contener comillas.
-
-## PASO 5 — Construcción de comandos (t_cmd)
-
-Ahora sí empieza el parser semántico.
-
-Recorres la lista de tokens y construyes:
+parse_tokens convierte la lista lineal de tokens (ya expandidos y sin comillas) en una estructura semántica lista para ejecutar:
 
 - comandos
-- argumentos (argv)
+- argumentos
 - redirecciones
-- pipeline (next)
+- pipelines
+
+Es el puente entre el expander y el executor.
+
+### Entrada
+
+parse_tokens recibe:
+
+```c
+t_token *tokens;
+```
+
+Estos tokens ya han pasado por:
+
+- Tokenizer
+- Expander
+- Quote removal
+
+Por tanto, la entrada cumple:
+
+- No hay comillas
+- No hay $ sin expandir
+- No hay tokens vacíos
+- Los operadores están bien formados
+- Los delimitadores de heredoc están intactos
+- Los WORD son definitivos
+
+##### Ejemplo de entrada:
+
+```
+WORD("ls")
+WORD("-l")
+PIPE("|")
+WORD("grep")
+WORD("txt")
+REDIR_OUT(">")
+WORD("out.txt")
+```
+
+##### Salida
+
+Devuelve una lista enlazada de comandos:
+
+```c
+t_cmd *cmd_list;
+Cada t_cmd contiene:
+char **argv
+t_redir *redirs
+t_cmd *next
+```
 
 **Ejemplo:**
 
 ```bash
-echo hola | wc -l > out.txt
+ls -l | grep txt > out.txt
 ```
 
-Produce dos nodos t_cmd:
+Se convierte en:
 
-- Comando 1
-
-```c
-argv = ["echo", "hola", NULL]
-infile = NULL
-outfile = NULL
-append = 0
-next → comando 2
+```
+cmd1 → cmd2
 ```
 
-- Comando 2
+### Funcionamiento paso a paso
+
+**1.** Inicializar el primer comando
+
+Crear un t_cmd vacío:
 
 ```c
-argv = ["wc", "-l", NULL]
-outfile = "out.txt"
-append = 0
+argv = NULL
+redirs = NULL
 next = NULL
 ```
 
-## PASO 6 — Validación semántica
+**2.** Recorrer la lista de tokens
 
-Aquí detectas errores como:
+Usar un puntero curr para avanzar token a token.
+
+**3.** `WORD → añadir a argv`
+
+Si el token es WORD, se añade al array de argumentos del comando actual.
+
+**Ejemplo:**
 
 ```bash
-echo > > out
-ls | | wc
-cat <
-| wc
-wc |
+ls -l /home
+→ argv = ["ls", "-l", "/home", NULL]
 ```
 
-Si algo falla → error de sintaxis.
+**4.** Redirecciones → asociarlas al comando actual
 
-## PASO 7 — Resultado final: lista de t_cmd
+Tipos:
 
-El parser devuelve:
+- '<'  → input
+- '>' → output truncate
+- '>>' → output append
+- '<<' → heredoc
 
-```
-t_cmd *cmd;
-```
+Regla:
 
-El executor recibe esta lista y ya no necesita interpretar nada.
-
-## Resumen en 7 pasos
-
-1. Tokenizer → separar palabras y operadores
-
-2. Validación léxica → comillas, operadores inválidos
-
-3. Expansión $VAR
-
-4. Eliminar comillas
-
-5. Construir t_cmd
-
-6. Validación semántica
-
-7. Devolver lista de comandos al executor
-
-# Desglose de pasos
-
-## 1. TOKENIZER
-
-El **Tokenizer** convierte la línea cruda del usuario en una lista de tokens (t_token) donde cada token representa:
-
-- una palabra
-- un operador (|, <, >, <<, >>)
-- respetando comillas
-- sin expandir variables
-- sin validar sintaxis
-- sin construir t_cmd
-
-El tokenizer es puramente léxico.
-
-### PASO 1 — Saltar espacios
-
-El tokenizer debe ignorar espacios entre tokens.
-
-<u>Regla:</u>
-
-	Un token nunca empieza por un espacio.
-
-### PASO 2 — Detectar operadores (1 y 2 caracteres)
-
-<u>Regla de oro:</u>
-
-- Primero detecta operadores de 2 caracteres (<<, >>).
-- Si no coinciden, detecta operadores de 1 carácter (<, >, |).
-
-**Ejemplos:**
-
-Entrada:
-
-```a>>b```
-
-Tokens:
-
-```c
-[WORD:"a"]
-[REDIR_APPEND:">>"]
-[WORD:"b"]
-```
-
-### PASO 3 — Detectar palabras
-
-Una palabra es:
-
-Una secuencia de caracteres que **NO** son operadores ni espacios, respetando comillas.
+Una redirección siempre debe ir seguida de un WORD.
 
 **Ejemplo:**
 
-```hola>>mundo```
+Código
+ls > out.txt
+→ redirección OUT con filename "out.txt"
 
-Tokens:
+**5.** PIPE → cerrar comando y abrir uno nuevo
 
-```c
-[WORD:"hola"]
-[REDIR_APPEND:">>"]
-[WORD:"mundo"]
-```
+Cuando aparece |:
 
-### PASO 4 — Manejo de comillas
+- Se cierra el comando actual
+- Se añade a la lista
+- Se crea un nuevo t_cmd vacío
+- Se continúa con los tokens restantes
 
-El tokenizer **NO** elimina comillas, solo las respeta para no cortar palabras.
+Validaciones:
+- '|' al inicio → error
+- '|' al final → error
+- '||' → error
 
-<u>Reglas:</u>
+**6.** Validar sintaxis
 
-- ```"hola mundo"``` → un solo token
-- ```'a b c'``` → un solo token
-- ```"hola>mundo"``` → un solo token (no detecta > dentro)
+Errores típicos:
 
-**Ejemplo:**
+- '|' sin comando antes o después
+- '<', '>', '>>', '<<' sin WORD después
+- Dos operadores seguidos sin WORD entre ellos
+- << |
+- '>' al final
 
-Entrada:
+Si hay error → liberar todo y devolver NULL.
 
-```echo "hola>mundo"```
+**7.** Finalizar y devolver la lista
 
-Tokens:
+Cuando no quedan tokens:
 
-```c
-[WORD:"echo"]
-[WORD:""hola>mundo""]
-```
+- Añadir el último comando a la lista
+- Devolver la lista completa de t_cmd
 
-### PASO 5 — Crear tokens
-
-Cada token es un nodo:
-
-```c
-typedef struct s_token
-{
-    char            *value;
-    t_toktype       type;
-    struct s_token  *next;
-}   t_token;
-```
-
-El tokenizer solo rellena esto, nada más.
-
-### PASO 6 — Clasificar tokens
-
-El tokenizer asigna:
-- TOK_WORD
-- TOK_PIPE
-- TOK_REDIR_IN
-- TOK_REDIR_OUT
-- TOK_REDIR_APPEND
-- TOK_HEREDOC
-
-**Ejemplo:**
-
-```>>``` → ```TOK_REDIR_APPEND```
-
-### PASO 7 — Devolver la lista enlazada
-
-El resultado final del tokenizer es:
-
-```t_token *tokens;```
-
-El parser semántico recibirá esta lista.
-
-### EJEMPLO COMPLETO DEL TOKENIZER
+### Ejemplo completo
 
 Entrada:
 
 ```bash
-echo "hola mundo" | wc -l >> out.tx
+cat < in.txt | grep hola >> out.txt
 ```
 
-Salida del tokenizer:
+Tokens:
+
+```bash
+WORD("cat")
+REDIR_IN("<")
+WORD("in.txt")
+PIPE("|")
+WORD("grep")
+WORD("hola")
+REDIR_APPEND(">>")
+WORD("out.txt")
+```
+
+Salida:
+
+Comando 1
+
+```
+argv = ["cat"]
+redirs = [ IN("in.txt") ]
+next → cmd2
+```
+
+Comando 2
+
+```
+argv = ["grep", "hola"]
+redirs = [ APPEND("out.txt") ]
+next = NULL
+```
+
+**6.** Qué NO debe hacer parse_tokens
+
+- No debe expandir variables
+- No debe eliminar comillas
+- No debe dividir palabras
+- No debe ejecutar nada
+- No debe abrir archivos
+- No debe crear pipes del sistema
+- No debe modificar el entorno
+
+**7.** Resumen final
+
+<u>parse_tokens:</u>
+
+- Entrada: lista de tokens ya expandidos y sin comillas
+- Salida: lista de t_cmd con argv, redirecciones y pipeline
+- Responsabilidad: construir la estructura semántica del comando
+- Validación: detectar errores de sintaxis
+- No toca: expansión, comillas, entorno, ejecución
+- Es el núcleo del parser semántico y el paso previo al executor.
+
+
+
+## Esqueleto conceptual de parse_tokens
+
+### 1. Crear el primer comando vacío
+
+parse_tokens comienza creando un t_cmd vacío:
 
 ```c
-[WORD:"echo"]
-[WORD:""hola mundo""]
-[PIPE:"|"]
-[WORD:"wc"]
-[WORD:"-l"]
-[REDIR_APPEND:">>"]
-[WORD:"out.txt"]
+argv = NULL
+redirs = NULL
+next = NULL
 ```
 
-Nada de expansión, nada de quitar comillas, nada de sintaxis.
+Este será el comando actual.
 
-### RESUMEN DEL PASO 1 (TOKENIZER)
+### 2. Recorrer la lista de tokens
 
-- Saltar espacios
-- Detectar operadores (<<, >>, <, >, |)
-- Detectar palabras
-- Respetar comillas
-- Crear tokens
-- Clasificar tokens
-- Devolver lista enlazada
+Se recorre token por token:
+- Si es WORD → añadir a argv
+- Si es redirección → procesar redirección
+- Si es PIPE → cerrar comando y abrir uno nuevo
 
-El tokenizer no interpreta, no valida, no expande, no construye comandos.
+### 3. Procesar tokens tipo WORD
 
+Cuando el token es WORD:
+- Se añade al array argv del comando actual
+- No se hace nada más
+
+Ejemplo:
+
+```
+ls -l /home
+→ argv = ["ls", "-l", "/home"]
+```
+
+### 4. Procesar redirecciones
+
+Cuando el token es:
+- '<'
+- '>'
+- '>>'
+- '<<'
+
+El parser debe:
+
+- Identificar el tipo
+- Mirar el siguiente token
+- Validar que sea WORD
+- Crear un nodo t_redir
+- Añadirlo a la lista cmd->redirs
+
+Ejemplo:
+
+```
+ls > out.txt
+→ redirección tipo TRUNC con file "out.txt"
+```
+
+### 5. Procesar pipes
+
+Cuando aparece |:
+- Validar que el comando actual tenga al menos un argv o redirección
+- Añadir el comando actual a la lista
+- Crear un nuevo t_cmd vacío
+- Continuar con los tokens restantes
+
+Ejemplo:
+
+```
+ls -l | grep txt
+→ dos comandos encadenados
+```
+
+### 6. Validación de sintaxis
+
+El parser debe detectar errores como:
+- '|' al inicio
+- '|' al final
+- '||'
+- '<' sin WORD después
+- '>' sin WORD después
+- '<<' |
+- '>' al final
+- Dos operadores seguidos sin WORD entre ellos
+
+Si ocurre un error:
+- Liberar todo
+- Devolver NULL
+
+### 7. Finalizar
+
+Cuando se acaban los tokens:
+- Añadir el último comando a la lista
+- Devolver la lista completa de t_cmd
+
+### Resumen final
+
+Estructuras necesarias:
+- t_cmd → comando con argv, redirecciones y next
+- t_redir → redirección con tipo, file y next
+- t_token → tokens ya expandidos y sin comillas
+
+Qué hace parse_tokens:
+- Crea un comando vacío
+- Recorre tokens
+- WORD → añadir a argv
+- Redirección → crear nodo y añadir
+- PIPE → cerrar comando y abrir otro
+- Validar sintaxis
+- Devolver lista de comandos
+
+Qué NO hace:
+- No expande variables
+- No elimina comillas
+- No ejecuta nada
+- No abre archivos
+- No crea pipes del sistema
+- 
