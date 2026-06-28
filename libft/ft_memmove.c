@@ -6,12 +6,20 @@
 /*   By: bconejo- <bconejo-@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 12:29:28 by bconejo-          #+#    #+#             */
-/*   Updated: 2025/05/15 18:07:49 by bconejo-         ###   ########.fr       */
+/*   Updated: 2026/06/28 01:25:57 by bconejo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
+/**
+ * @brief Copies 'len' bytes from string 'src' to string 'dst'
+ * 
+ * @param dst The string destiny
+ * @param src The string source
+ * @param len The number of bytes to copy 
+ * @return Returns the original value of 'dst' 
+ */
 void	*ft_memmove(void *dst, const void *src, size_t len)
 {
 	unsigned char			*d;

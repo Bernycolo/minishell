@@ -6,12 +6,20 @@
 /*   By: bconejo- <bconejo-@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 12:48:48 by bconejo-          #+#    #+#             */
-/*   Updated: 2025/05/15 18:08:08 by bconejo-         ###   ########.fr       */
+/*   Updated: 2026/06/28 02:12:06 by bconejo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
+/**
+ * @brief Copies 'dstsize' bytes from the string 'src' into 'dst'
+ * 
+ * @param dst The destiny string
+ * @param src The source string
+ * @param dstsize The number of bytes to copy
+ * @return Returns the total length of the string they tried to create 
+ */
 size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize)
 {
 	size_t	i;

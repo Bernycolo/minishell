@@ -6,7 +6,7 @@
 /*   By: bconejo- <bconejo-@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 18:51:30 by bconejo-          #+#    #+#             */
-/*   Updated: 2026/06/25 20:26:23 by bconejo-         ###   ########.fr       */
+/*   Updated: 2026/06/28 01:03:45 by bconejo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ static int	length(int n)
  * an argument
  * 
  * @param n The Integer to be converted
- * @return The string that represents the number
+ * @return Returns the string that represents the number
  * 
  * NULL if memory reservation fails 
  */

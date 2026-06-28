@@ -6,12 +6,20 @@
 /*   By: bconejo- <bconejo-@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 11:48:02 by bconejo-          #+#    #+#             */
-/*   Updated: 2025/05/15 18:07:30 by bconejo-         ###   ########.fr       */
+/*   Updated: 2026/06/28 01:23:47 by bconejo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
+/**
+ * @brief Copies 'n' bytes from memory area 'src' to memory area 'dest'
+ * 
+ * @param dest The memory area destiny
+ * @param src The memory area source
+ * @param n The number of bytes it copy
+ * @return Returns the original value of 'dest' 
+ */
 void	*ft_memcpy(void *dest, const void *src, size_t n)
 {
 	unsigned char			*d;

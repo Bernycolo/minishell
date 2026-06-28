@@ -6,12 +6,20 @@
 /*   By: bconejo- <bconejo-@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 14:27:44 by bconejo-          #+#    #+#             */
-/*   Updated: 2025/05/15 18:08:23 by bconejo-         ###   ########.fr       */
+/*   Updated: 2026/06/28 02:05:30 by bconejo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
+/**
+ * @brief Appends string 'src' to the end of 'dst'
+ * 
+ * @param dst The destiny string
+ * @param src The source string
+ * @param dstsize The length of the destination string
+ * @return Returns the total length of the string they tried to create 
+ */
 size_t	ft_strlcat(char *dst, const char *src, size_t dstsize)
 {
 	size_t	i;

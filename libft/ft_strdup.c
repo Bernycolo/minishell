@@ -6,12 +6,19 @@
 /*   By: bconejo- <bconejo-@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 12:21:02 by bconejo-          #+#    #+#             */
-/*   Updated: 2025/05/15 19:58:24 by bconejo-         ###   ########.fr       */
+/*   Updated: 2026/06/28 01:53:32 by bconejo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
+/**
+ * @brief Allocates sufficient memory for a copy of the string 's'
+ * 
+ * @param s The string to allocate
+ * @return Returns a pointer to the string allocated.
+ * If insufficient memory is available, NULL is returned 
+ */
 char	*ft_strdup(const char *s)
 {
 	int		i;

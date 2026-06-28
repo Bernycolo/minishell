@@ -6,12 +6,18 @@
 /*   By: bconejo- <bconejo-@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 19:06:00 by bconejo-          #+#    #+#             */
-/*   Updated: 2025/05/22 19:45:25 by bconejo-         ###   ########.fr       */
+/*   Updated: 2026/06/28 01:05:28 by bconejo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
+/**
+ * @brief Adds a new node to the end of the list
+ * 
+ * @param lst A pointer to the head of a list
+ * @param new A pointer to the node to add
+ */
 void	ft_lstadd_back(t_list **lst, t_list *new)
 {
 	t_list	*output;

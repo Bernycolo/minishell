@@ -6,10 +6,17 @@
 /*   By: bconejo- <bconejo-@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 00:25:42 by bconejo-          #+#    #+#             */
-/*   Updated: 2025/05/11 17:30:48 by bconejo-         ###   ########.fr       */
+/*   Updated: 2026/06/28 00:59:32 by bconejo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+/**
+ * @brief Converts the initial portion of the string pointed to by 'str'
+ * to 'int' representation
+ * 
+ * @param str The string to convert
+ * @return Returns the int converted
+ */
 int	ft_atoi(const char *str)
 {
 	int	i;

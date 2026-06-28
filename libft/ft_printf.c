@@ -6,7 +6,7 @@
 /*   By: bconejo- <bconejo-@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 17:59:32 by bconejo-          #+#    #+#             */
-/*   Updated: 2026/03/31 16:57:18 by bconejo-         ###   ########.fr       */
+/*   Updated: 2026/06/28 01:45:42 by bconejo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,13 @@ static int	my_print(char specifier, va_list args)
 	return (count);
 }
 
+/**
+ * @brief Function that mimics the original printf() function
+ * 
+ * @param str The string to print
+ * @param ... 
+ * @return Returns the number of printed characters 
+ */
 int	ft_printf(char const *str, ...)
 {
 	int		count;
