@@ -35,6 +35,8 @@
 /*					Parser							*/
 t_status			parse(const char *input, t_cmd *cmd, t_env *env);
 
+char				*init_shell(t_shell *shell, char **envp);
+void				end_shell(t_shell *shell);
 t_status			init_cmd(t_cmd **cmd);
 void				free_cmd(t_cmd **cmd);
 

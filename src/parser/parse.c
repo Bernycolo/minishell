@@ -65,8 +65,6 @@ t_status	parse(const char *input, t_cmd *cmd, t_env *env)
 	{
 		if (lexer_validate(token_list))
 		{
-			print_token_list(token_list);
-			printf("\n\n\n\n");
 			expand_tokens(&token_list, env, 0);
 			print_token_list(token_list);
 		}

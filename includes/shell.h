@@ -14,7 +14,7 @@ typedef struct s_shell
 {
 	t_env	*env;
 	t_token	*tokens;
-	// t_ast	*ast;
+	t_cmd	*cmd;
 	int		last_status;
 	int		running;
 }			t_shell;

@@ -5,28 +5,20 @@ int	main(int ac, char **av, char **envp)
 {
 	char	*str;
 	char	*prompt;
-	t_cmd	*cmd;
-	t_env	*env;
+	t_shell	shell;
 
 	(void)ac;
 	(void)av;
-	env = NULL;
-	if (!init_cmd(&cmd))
-		return (1);
-	printf("\033[3J\033[2J\033[H");
-	env_init(&env, envp);
-	printf("Welcome to minishell!\n");
-	prompt = ft_strjoin(SOFT_YELLOW "minishell" RESET " % ", GRAY);
+	prompt = init_shell(&shell, envp);
 	str = readline(prompt);
 	while (str != NULL && str[0] != 0)
 	{
-		if (parse(str, cmd, env))
+		if (parse(str, shell.cmd, shell.env))
 			add_history(str);
 		free(str);
 		str = readline(prompt);
 	}
 	free(prompt);
-	free_env(&env);
-	free_cmd(&cmd);
+	end_shell(&shell);
 	free(str);
 }

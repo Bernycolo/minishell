@@ -1,4 +1,5 @@
 #include "minishell.h"
+#include "libft.h"
 
 /**
  * @brief Initializes a struct cmd
@@ -50,4 +51,30 @@ void	free_cmd(t_cmd **cmd)
 		cur = next;
 	}
 	*cmd = NULL;
+}
+
+/**
+ * @brief Initializes a shell struct
+ * 
+ * @param shell A pointer to the shell struct
+ * @param envp The system environment variables 
+ */
+char	*init_shell(t_shell *shell, char **envp)
+{
+	shell->env = NULL;
+	shell->tokens = NULL;
+	shell->cmd = NULL;
+	shell->last_status = 0;
+	shell->running = 1;
+	env_init(&shell->env, envp);
+	init_cmd(&shell->cmd);
+	printf("\033[3J\033[2J\033[H");
+	printf("Welcome to minishell!\n");
+	return (ft_strjoin(SOFT_YELLOW "minishell" RESET " % ", GRAY));
+}
+
+void	end_shell(t_shell *shell)
+{
+	free_env(&shell->env);
+	free_cmd(&shell->cmd);
 }
