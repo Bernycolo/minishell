@@ -327,4 +327,3 @@ Qué NO hace:
 - No ejecuta nada
 - No abre archivos
 - No crea pipes del sistema
-- 

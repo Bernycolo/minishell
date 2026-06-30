@@ -6,7 +6,7 @@
 /*   By: bconejo- <bconejo-@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 12:51:14 by bconejo-          #+#    #+#             */
-/*   Updated: 2026/06/28 01:01:27 by bconejo-         ###   ########.fr       */
+/*   Updated: 2026/06/30 12:50:19 by bconejo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
  * @brief Test for any character whether it is a letter or a number
  * 
  * @param c The character to test
- * @return Returns zero if the character tests 'false' and returns the value ASCII
- * if the character tests 'true'
+ * @return Returns zero if the character tests 'false' and returns the value
+ * ASCII if the character tests 'true'
  */
 int	ft_isalnum(int c)
 {

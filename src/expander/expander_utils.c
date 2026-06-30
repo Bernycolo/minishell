@@ -68,7 +68,8 @@ static char	*expand_variable(char *value, int *i, t_env *env, int last_status)
  * @param i A pointer to an index
  * @return The extracted text
  */
-static char	*extract_double_quoted(char *value, int *i, t_env *env, int last_status)
+static char	*extract_double_quoted(char *value, int *i, t_env *env,
+			int last_status)
 {
 	char	*result;
 	char	*fragment;
