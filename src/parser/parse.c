@@ -59,7 +59,6 @@ t_status	parse(const char *input, t_cmd *cmd, t_env *env)
 	t_token	*token_list;
 
 	(void)cmd;
-	(void)env;
 	token_list = tokenizer(input);
 	if (token_list)
 	{

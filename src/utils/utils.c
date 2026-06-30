@@ -13,9 +13,9 @@ t_status	init_cmd(t_cmd **cmd)
 	if (!*cmd)
 		return (FAILURE);
 	(*cmd)->arg = NULL;
-	(*cmd)->infile = NULL;
-	(*cmd)->outfile = NULL;
-	(*cmd)->append = 0;
+	(*cmd)->argc = 0;
+	(*cmd)->cmd_path = NULL;
+	(*cmd)->redirs = NULL;
 	(*cmd)->is_builtin = 0;
 	(*cmd)->next = NULL;
 	return (SUCCESS);
@@ -45,8 +45,8 @@ void	free_cmd(t_cmd **cmd)
 				free(cur->arg[i++]);
 			free(cur->arg);
 		}
-		free(cur->infile);
-		free(cur->outfile);
+		free(cur->cmd_path);
+		free(cur->redirs);
 		free(cur);
 		cur = next;
 	}
@@ -58,6 +58,7 @@ void	free_cmd(t_cmd **cmd)
  * 
  * @param shell A pointer to the shell struct
  * @param envp The system environment variables 
+ * @return char* The prompt of the shell
  */
 char	*init_shell(t_shell *shell, char **envp)
 {
@@ -73,6 +74,11 @@ char	*init_shell(t_shell *shell, char **envp)
 	return (ft_strjoin(SOFT_YELLOW "minishell" RESET " % ", GRAY));
 }
 
+/**
+ * @brief Frees the memory space occupied by environment and command list
+ * 
+ * @param shell A pointer to the shell struct
+ */
 void	end_shell(t_shell *shell)
 {
 	free_env(&shell->env);
