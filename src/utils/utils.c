@@ -68,7 +68,6 @@ char	*init_shell(t_shell *shell, char **envp)
 	shell->last_status = 0;
 	shell->running = 1;
 	env_init(&shell->env, envp);
-	init_cmd(&shell->cmd);
 	printf("\033[3J\033[2J\033[H");
 	printf("Welcome to minishell!\n");
 	return (ft_strjoin(SOFT_YELLOW "minishell" RESET " % ", GRAY));

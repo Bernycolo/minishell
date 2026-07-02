@@ -1,6 +1,23 @@
 #include "minishell.h"
 #include "libft.h"
 
+void	print_cmd(t_cmd *cmd)
+{
+	int	i;
+
+	i = 0;
+	if (cmd->arg)
+	{
+		while (cmd->arg[i])
+		{
+			printf("%s\n", cmd->arg[i]);
+			i++;
+		}
+
+	}
+	return ;
+}
+
 int	main(int ac, char **av, char **envp)
 {
 	char	*str;
@@ -14,8 +31,12 @@ int	main(int ac, char **av, char **envp)
 		str = readline(prompt);
 		while (str != NULL && str[0] != 0)
 		{
-			if (parse(str, shell.cmd, shell.env))
+			if (parse(str, &shell))
+			{
 				add_history(str);
+				print_cmd(shell.cmd);
+				free_cmd(&shell.cmd);
+			}
 			free(str);
 			str = readline(prompt);
 		}
