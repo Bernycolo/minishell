@@ -36,10 +36,4 @@
 t_status			parse(const char *input, t_shell *shell);
 t_cmd				*parse_token(t_shell *shell);
 
-char				*init_shell(t_shell *shell, char **envp);
-void				end_shell(t_shell *shell);
-t_status			init_cmd(t_cmd **cmd);
-void				free_cmd(t_cmd **cmd);
-void				print_cmd(t_cmd *cmd);
-
 #endif

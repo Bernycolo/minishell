@@ -32,3 +32,7 @@ typedef struct s_cmd
 }					t_cmd;
 
 #endif
+
+t_status			init_cmd(t_cmd **cmd);
+void				free_cmd(t_cmd **cmd);
+void				print_cmd(t_cmd *cmd);

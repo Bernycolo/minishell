@@ -7,7 +7,7 @@
  * @struct s_shell
  * @brief Global status of minishell
  *
- * Contains the environment, tokens, AST and the exit status
+ * Contains the environment, tokens, CMD and the exit status
  *
  */
 typedef struct s_shell
@@ -20,3 +20,6 @@ typedef struct s_shell
 }			t_shell;
 
 #endif
+
+char				*init_shell(t_shell *shell, char **envp);
+void				end_shell(t_shell *shell);
