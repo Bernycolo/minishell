@@ -36,3 +36,5 @@ typedef struct s_cmd
 t_status			init_cmd(t_cmd **cmd);
 void				free_cmd(t_cmd **cmd);
 void				print_cmd(t_cmd *cmd);
+
+t_redir				*new_redir(t_token_type type, char *target);

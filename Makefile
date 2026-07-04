@@ -14,7 +14,7 @@ GREEN = \033[0;32m
 RESET = \033[0m
 
 # Files
-SRC = 	parser/parse.c parser/parse_token.c \
+SRC = 	parser/parse.c parser/parse_token.c parser/cmd.c \
 		tokenizer/tokenizer.c tokenizer/tokenizer_utils.c tokenizer/read_word.c \
 		lexer/lexer.c \
 		env/env.c env/env_utils.c \

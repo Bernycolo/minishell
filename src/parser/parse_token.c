@@ -21,14 +21,21 @@ char	**add_arg(t_cmd	*cmd, char *value)
 	n_args = count_arg(cmd->arg);
 	new_arg = malloc(sizeof(char *) * (n_args + 2));
 	i = 0;
-	while (cmd->arg[i])
+	if (cmd->arg)
 	{
-		new_arg[i] = ft_strdup(cmd->arg[i]);
-		i++;
+		while (cmd->arg[i])
+		{
+			new_arg[i] = ft_strdup(cmd->arg[i]);
+			i++;
+		}
 	}
 	new_arg[i] = ft_strdup(value);
 	new_arg[i + 1] = NULL;
-	free(cmd->arg);
+	i = 0;
+	while (cmd->arg && cmd->arg[i])
+		free(cmd->arg[i++]);
+	if (cmd->arg)
+		free(cmd->arg);
 	return (new_arg);
 }
 
@@ -64,7 +71,10 @@ t_status	fill_cmd(t_shell **shell)
 			(*shell)->cmd->argc++;
 		}
 		else
-			printf("No Word.\n");
+		{
+			(*shell)->cmd->redirs = new_redir(curr->type, ft_strdup(curr->next->value));
+			curr = curr->next;
+		}
 		curr = curr->next;
 	}
 	return (SUCCESS);

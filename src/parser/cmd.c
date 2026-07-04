@@ -1,0 +1,106 @@
+#include "minishell.h"
+
+/**
+ * @brief Initializes a struct cmd
+ *
+ * @param cmd Struct to inicializate
+ * @return t_status SUCCESS if it is inicializated, FAILURE otherwise
+ */
+t_status	init_cmd(t_cmd **cmd)
+{
+	*cmd = malloc(sizeof(t_cmd));
+	if (!*cmd)
+		return (FAILURE);
+	(*cmd)->arg = NULL;
+	(*cmd)->argc = 0;
+	(*cmd)->cmd_path = NULL;
+	(*cmd)->redirs = NULL;
+	(*cmd)->is_builtin = 0;
+	(*cmd)->next = NULL;
+	return (SUCCESS);
+}
+
+void	free_redir(t_redir *redir)
+{
+	t_redir	*aux;
+
+	aux = redir;
+	while (aux)
+	{
+		free(aux->target);
+		aux = aux->next;
+	}
+	free(redir);
+}
+
+/**
+ * @brief Frees the memory space occupied by a command list
+ *
+ * @param cmd A pointer to the head of the command list
+ */
+void	free_cmd(t_cmd **cmd)
+{
+	t_cmd	*cur;
+	t_cmd	*next;
+	int		i;
+
+	if (!cmd || !*cmd)
+		return ;
+	cur = *cmd;
+	while (cur)
+	{
+		next = cur->next;
+		if (cur->arg)
+		{
+			i = 0;
+			while (cur->arg[i])
+				free(cur->arg[i++]);
+			free(cur->arg);
+		}
+		free(cur->cmd_path);
+		free_redir(cur->redirs);
+		free(cur);
+		cur = next;
+	}
+	*cmd = NULL;
+}
+
+void	print_cmd(t_cmd *cmd)
+{
+	int	i;
+	t_redir	*redir;
+
+	i = 0;
+	if (cmd->arg)
+	{
+		while (cmd->arg[i])
+		{
+			printf("arg[%i] = %s\n", i, cmd->arg[i]);
+			i++;
+		}
+	}
+	redir = cmd->redirs;
+	if (redir)
+	{
+		i = 0;
+		while (redir)
+		{
+			printf("%d{%s}\n", redir->type, redir->target);
+			redir = redir->next;
+		}
+	}
+	return ;
+}
+
+t_redir	*new_redir(t_token_type type, char *target)
+{
+	t_redir	*redir;
+
+	redir = malloc(sizeof(t_redir));
+	if (!redir)
+		return (NULL);
+	redir->type = type;
+	redir->target = target;
+	redir->next = NULL;
+	return (redir);
+}

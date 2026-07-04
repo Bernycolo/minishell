@@ -1,23 +1,6 @@
 #include "minishell.h"
 #include "libft.h"
 
-void	print_cmd(t_cmd *cmd)
-{
-	int	i;
-
-	i = 0;
-	if (cmd->arg)
-	{
-		while (cmd->arg[i])
-		{
-			printf("%s\n", cmd->arg[i]);
-			i++;
-		}
-
-	}
-	return ;
-}
-
 int	main(int ac, char **av, char **envp)
 {
 	char	*str;
