@@ -28,15 +28,6 @@ char	**add_arg(t_cmd	*cmd, char *value)
 	}
 	new_arg[i] = ft_strdup(value);
 	new_arg[i + 1] = NULL;
-
-	i = 0;
-	while (i < n_args)
-	{
-		printf("%s\n", new_arg[i]);
-		i++;
-	}
-
-
 	free(cmd->arg);
 	return (new_arg);
 }
@@ -61,16 +52,10 @@ int	count_words(t_token *tokens)
 
 t_status	fill_cmd(t_shell **shell)
 {
-	int		i;
+//	int		i;
 	t_token	*curr;
 
-	i = count_words((*shell)->tokens);
-	if (i <= 0)
-		return (FAILURE);
 	curr = (*shell)->tokens;
-	(*shell)->cmd->arg = malloc(sizeof(char *) * (i + 1));
-	if (!(*shell)->cmd->arg)
-		return (FAILURE);
 	while (curr)
 	{
 		if (curr->type == WORD)
