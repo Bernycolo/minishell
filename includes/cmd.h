@@ -3,12 +3,20 @@
 
 # include "structs.h"
 
+typedef enum e_pstate
+{
+	PS_START,
+	PS_WORD,
+	PS_REDIR,
+	PS_AFTER_REDIR,
+	PS_PIPE
+}					t_pstate;
+
 /**
  * @struct s_redir
  * @brief Represents a single redirection associated with a command.
  *
  */
-
 typedef struct s_redir
 {
 	t_token_type	type;
@@ -31,10 +39,10 @@ typedef struct s_cmd
 	struct s_cmd	*next;
 }					t_cmd;
 
-#endif
-
 t_status			init_cmd(t_cmd **cmd);
 void				free_cmd(t_cmd **cmd);
 void				print_cmd(t_cmd *cmd);
 
 t_redir				*new_redir(t_token_type type, char *target);
+
+#endif

@@ -20,6 +20,31 @@ t_status	init_cmd(t_cmd **cmd)
 	return (SUCCESS);
 }
 
+/**
+ * @brief Creates a new redir object
+ * 
+ * @param type The type of the new redir
+ * @param target The target of the redirection
+ * @return A pointer to the newly creater redir, or NULL if allocation fails
+ */
+t_redir	*new_redir(t_token_type type, char *target)
+{
+	t_redir	*redir;
+
+	redir = malloc(sizeof(t_redir));
+	if (!redir)
+		return (NULL);
+	redir->type = type;
+	redir->target = target;
+	redir->next = NULL;
+	return (redir);
+}
+
+/**
+ * @brief Frees the memory space occupied by a redir list
+ * 
+ * @param redir A pointer to the head of the redir list 
+ */
 void	free_redir(t_redir *redir)
 {
 	t_redir	*aux;
@@ -65,10 +90,15 @@ void	free_cmd(t_cmd **cmd)
 	*cmd = NULL;
 }
 
+/**
+ * @brief Prints the elements of a command object
+ * 
+ * @param cmd The command object to print
+ */
 void	print_cmd(t_cmd *cmd)
 {
-	int	i;
 	t_redir	*redir;
+	int		i;
 
 	i = 0;
 	if (cmd->arg)
@@ -90,17 +120,4 @@ void	print_cmd(t_cmd *cmd)
 		}
 	}
 	return ;
-}
-
-t_redir	*new_redir(t_token_type type, char *target)
-{
-	t_redir	*redir;
-
-	redir = malloc(sizeof(t_redir));
-	if (!redir)
-		return (NULL);
-	redir->type = type;
-	redir->target = target;
-	redir->next = NULL;
-	return (redir);
 }

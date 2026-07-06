@@ -19,7 +19,7 @@ typedef struct s_shell
 	int		running;
 }			t_shell;
 
-#endif
-
 char				*init_shell(t_shell *shell, char **envp);
 void				end_shell(t_shell *shell);
+
+#endif

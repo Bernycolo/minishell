@@ -31,4 +31,3 @@ void	end_shell(t_shell *shell)
 	free_env(&shell->env);
 	free_cmd(&shell->cmd);
 }
-

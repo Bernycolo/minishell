@@ -11,8 +11,7 @@ int	count_arg(char **arg)
 	return (i);
 }
 
-
-char	**add_arg(t_cmd	*cmd, char *value)
+char	**add_arg(t_cmd *cmd, char *value)
 {
 	int		n_args;
 	int		i;
@@ -51,33 +50,83 @@ int	count_words(t_token *tokens)
 		if (curr->type == WORD)
 			count++;
 		else if (curr->type == PIPE)
-			break;
+			break ;
 		curr = curr->next;
 	}
 	return (count);
 }
+/*
+t_status	fill_cmd(t_shell **shell)
+{
+t_token	*curr;
+t_pstate	state;
+
+curr = (*shell)->tokens;
+state = PS_START;
+while (curr)
+{
+if (curr->type == WORD)
+{
+(*shell)->cmd->arg = add_arg((*shell)->cmd, curr->value);
+(*shell)->cmd->argc++;
+}
+else if (curr->type == INPUT || curr->type == TRUNC
+|| curr->type == APPEND || curr->type == HEREDOC)
+{
+(*shell)->cmd->redirs = new_redir(curr->type,
+ft_strdup(curr->next->value));
+curr = curr->next;
+}
+curr = curr->next;
+}
+return (SUCCESS);
+}
+*/
+
+t_status	manage_start(t_token *tokens, t_cmd **cmds, t_pstate *state)
+{
+	if (tokens->type == WORD)
+	{
+		(*cmds)->arg = add_arg(cmds, tokens->value);
+		(*cmds)->argc++;
+		*state = PS_WORD;
+		return (SUCCESS);
+	}
+	else if (tokens->type == INPUT || tokens->type == TRUNC
+		|| tokens->type == APPEND || tokens->type == HEREDOC)
+	{
+		*state = PS_REDIR;
+		return (SUCCESS);
+	}
+	return (FAILURE);
+}
 
 t_status	fill_cmd(t_shell **shell)
 {
-//	int		i;
-	t_token	*curr;
+	t_pstate	state;
+	t_status	result_state;
+	t_token		*tokens;
+	t_cmd		*cmds;
 
-	curr = (*shell)->tokens;
-	while (curr)
+	tokens = (*shell)->tokens;
+	cmds = (*shell)->cmd;
+	state = PS_START;
+	result_state = SUCCESS;
+	while (tokens && result_state)
 	{
-		if (curr->type == WORD)
-		{
-			(*shell)->cmd->arg = add_arg((*shell)->cmd, curr->value);
-			(*shell)->cmd->argc++;
-		}
+		if (state == PS_START)
+			result_state = manage_start(tokens, &cmds, &state);
+		else if (state == PS_WORD)
+			result_state = manage_word(tokens, &cmds, &state);
+		else if (state == PS_REDIR)
+			result_state = manage_redir(tokens, &cmds, &state);
+		else if (state == PS_AFTER_REDIR)
+			result_state = manage_after_redir(tokens, &cmds, &state);
 		else
-		{
-			(*shell)->cmd->redirs = new_redir(curr->type, ft_strdup(curr->next->value));
-			curr = curr->next;
-		}
-		curr = curr->next;
+			result_state = manage_pipe(tokens, &cmds, &state);
+		tokens = tokens->next;
 	}
-	return (SUCCESS);
+	return (result_state);
 }
 
 t_cmd	*parse_token(t_shell *shell)

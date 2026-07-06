@@ -27,6 +27,11 @@ int	op_count(const char *input)
 	return (count);
 }
 
+/**
+ * @brief Prints the content of a tokens list
+ * 
+ * @param token_list The tokens list to print
+ */
 void	print_token_list(t_token *token_list)
 {
 	t_token	*token;
@@ -56,7 +61,6 @@ void	print_token_list(t_token *token_list)
 
 t_status	parse(const char *input, t_shell *shell)
 {
-
 	shell->tokens = tokenizer(input);
 	if (shell->tokens)
 	{

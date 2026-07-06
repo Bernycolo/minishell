@@ -30,5 +30,4 @@ int	main(int ac, char **av, char **envp)
 	}
 	printf("Error!\n");
 	return (1);
-
 }

@@ -8,8 +8,11 @@
  */
 t_status	check_first_token(t_token *token)
 {
+/*
 	if (token->type == PIPE || token->type == INPUT || token->type == TRUNC
 		|| token->type == HEREDOC || token->type == APPEND)
+*/
+	if (token->type == PIPE)
 		return (FAILURE);
 	return (SUCCESS);
 }
