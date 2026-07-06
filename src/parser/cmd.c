@@ -6,7 +6,7 @@
  * @param cmd Struct to inicializate
  * @return t_status SUCCESS if it is inicializated, FAILURE otherwise
  */
-t_status	init_cmd(t_cmd **cmd)
+t_status	new_cmd(t_cmd **cmd)
 {
 	*cmd = malloc(sizeof(t_cmd));
 	if (!*cmd)
@@ -27,7 +27,7 @@ t_status	init_cmd(t_cmd **cmd)
  * @param target The target of the redirection
  * @return A pointer to the newly creater redir, or NULL if allocation fails
  */
-t_redir	*new_redir(t_token_type type, char *target)
+t_redir	*new_redir(t_token_type type)
 {
 	t_redir	*redir;
 
@@ -35,7 +35,7 @@ t_redir	*new_redir(t_token_type type, char *target)
 	if (!redir)
 		return (NULL);
 	redir->type = type;
-	redir->target = target;
+	redir->target = NULL;
 	redir->next = NULL;
 	return (redir);
 }

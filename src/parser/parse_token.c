@@ -101,6 +101,26 @@ t_status	manage_start(t_token *tokens, t_cmd **cmds, t_pstate *state)
 	return (FAILURE);
 }
 
+t_status	manage_word(t_token *tokens, t_cmd **cmds, t_pstate *state)
+{
+	if (tokens->type == WORD)
+	{
+		(*cmds)->arg = add_arg(cmds, tokens->value);
+		(*cmds)->argc++;
+	}
+	else if (tokens->type == INPUT || tokens->type == TRUNC ||
+		tokens->type == APPEND || tokens->type == HEREDOC )
+		{
+			(*cmds)->redirs = new_redir(tokens->type);
+			*state = PS_REDIR;
+		}
+	else if (tokens->type == PIPE)
+	{
+
+	}
+
+}
+
 t_status	fill_cmd(t_shell **shell)
 {
 	t_pstate	state;
@@ -131,7 +151,7 @@ t_status	fill_cmd(t_shell **shell)
 
 t_cmd	*parse_token(t_shell *shell)
 {
-	init_cmd(&shell->cmd);
+	new_cmd(&shell->cmd);
 	if (!fill_cmd(&shell))
 		return (NULL);
 	return (shell->cmd);

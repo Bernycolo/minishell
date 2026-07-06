@@ -39,10 +39,10 @@ typedef struct s_cmd
 	struct s_cmd	*next;
 }					t_cmd;
 
-t_status			init_cmd(t_cmd **cmd);
+t_status			new_cmd(t_cmd **cmd);
 void				free_cmd(t_cmd **cmd);
 void				print_cmd(t_cmd *cmd);
 
-t_redir				*new_redir(t_token_type type, char *target);
+t_redir				*new_redir(t_token_type type);
 
 #endif
