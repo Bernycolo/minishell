@@ -1,34 +1,6 @@
 #include "minishell.h"
 #include "libft.h"
 
-/*
-int	op_count(const char *input)
-{
-	int	i;
-	int	count;
-
-	i = 0;
-	count = 0;
-	while (input && input[i])
-	{
-		if (input[i] == '>' && input[i + 1] && input[i + 1] == '>')
-		{
-			count++;
-			i += 2;
-		}
-		else if (input[i] == '<' && input[i + 1] && input[i + 1] == '<')
-		{
-			count++;
-			i += 2;
-		}
-		else if (ft_strchr("|<>", input[i]))
-			count++;
-		i++;
-	}
-	return (count);
-}
-*/
-
 /**
  * @brief Prints the content of a tokens list
  * 
@@ -72,15 +44,14 @@ t_status	parse(const char *input, t_shell *shell)
 			shell->cmd = parse_token(shell);
 			if (!shell->cmd)
 			{
-				printf("Error: syntax error!\n");
+				printf("Error1: syntax error!\n");
 				return (FAILURE);	
 			}
-//			free_tokenlst(&shell->tokens);
 			return (SUCCESS);
 		}
 		else
 		{
-			printf("Error: syntax error!\n");
+			printf("Error2: syntax error!\n");
 			free_tokenlst(&shell->tokens);
 			return (FAILURE);
 		}

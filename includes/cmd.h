@@ -44,5 +44,6 @@ void				free_cmd(t_cmd **cmd);
 void				print_cmd(t_cmd *cmd);
 
 t_redir				*new_redir(t_token_type type);
+void				add_redir(t_cmd *cmd, t_token_type type);
 
 #endif

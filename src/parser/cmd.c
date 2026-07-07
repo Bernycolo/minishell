@@ -40,6 +40,25 @@ t_redir	*new_redir(t_token_type type)
 	return (redir);
 }
 
+void	add_redir(t_cmd *cmd, t_token_type type)
+{
+	t_redir	*new;
+	t_redir	*curr;
+
+	new = new_redir(type);
+	if (!cmd->redirs)
+	{
+		cmd->redirs = new;
+		return ;
+	}
+	curr = cmd->redirs;
+	while (curr->next)
+		curr = curr->next;
+	curr->next = new;
+}
+
+
+
 /**
  * @brief Frees the memory space occupied by a redir list
  * 
@@ -49,13 +68,13 @@ void	free_redir(t_redir *redir)
 {
 	t_redir	*aux;
 
-	aux = redir;
-	while (aux)
+	while (redir)
 	{
-		free(aux->target);
-		aux = aux->next;
+		aux = redir->next;
+		free(redir->target);
+		free(redir);
+		redir = aux;
 	}
-	free(redir);
 }
 
 /**

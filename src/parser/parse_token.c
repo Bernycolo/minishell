@@ -95,7 +95,7 @@ t_status	manage_start(t_token *tokens, t_cmd **cmds, t_pstate *state)
 	else if (tokens->type == TRUNC || tokens->type == INPUT
 		|| tokens->type == APPEND || tokens->type == HEREDOC)
 	{
-		(*cmds)->redirs = new_redir(tokens->type);
+		add_redir(*cmds, tokens->type);
 		*state = PS_REDIR;
 		return (SUCCESS);
 	}
@@ -114,7 +114,7 @@ t_status	manage_word(t_token *tokens, t_cmd **cmds, t_pstate *state)
 	else if (tokens->type == TRUNC || tokens->type == INPUT
 		|| tokens->type == APPEND || tokens->type == HEREDOC )
 		{
-			(*cmds)->redirs = new_redir(tokens->type);
+			add_redir(*cmds, tokens->type);
 			*state = PS_REDIR;
 		}
 	else if (tokens->type == PIPE)
@@ -131,13 +131,20 @@ t_status	manage_word(t_token *tokens, t_cmd **cmds, t_pstate *state)
 
 t_status	manage_redir(t_token *tokens, t_cmd **cmds, t_pstate *state)
 {
+	t_redir	*last;
+
 	if (tokens->type == WORD)
 	{
-		(*cmds)->redirs->target = ft_strdup(tokens->value);
+		last = (*cmds)->redirs;
+		if (!last)
+			return (FAILURE);
+		while (last && last->next)
+			last = last->next;
+		last->target = ft_strdup(tokens->value);
 		*state = PS_AFTER_REDIR;
 		return (SUCCESS);
 	}
-	printf("parse error near '%s", tokens->value);
+	printf("parse error near '%s'", tokens->value);
 	return (FAILURE);
 }
 
@@ -146,7 +153,7 @@ t_status	manage_after_redir(t_token *tokens, t_cmd **cmds, t_pstate *state)
 	if (tokens->type == TRUNC || tokens->type == INPUT
 		|| tokens->type == APPEND || tokens->type == HEREDOC)
 	{
-		(*cmds)->redirs = new_redir(tokens->type);
+		add_redir(*cmds, tokens->type);
 		*state = PS_REDIR;
 	}
 	else if (tokens->type == PIPE)
@@ -157,6 +164,8 @@ t_status	manage_after_redir(t_token *tokens, t_cmd **cmds, t_pstate *state)
 		(*cmds)->argc++;
 		*state = PS_WORD;
 	}
+	else
+		return (FAILURE);
 	return (SUCCESS);
 }
 
@@ -180,7 +189,7 @@ t_status	manage_pipe(t_token *tokens, t_cmd **cmds, t_pstate *state)
 		new_cmd(&new);
 		(*cmds)->next = new;
 		*cmds = new;
-		new->redirs = new_redir(tokens->type);
+		add_redir(new, tokens->type);
 		*state = PS_REDIR;
 		return (SUCCESS);
 	}
@@ -222,7 +231,6 @@ t_cmd	*parse_token(t_shell *shell)
 	{
 		free_tokenlst(&shell->tokens);
 		free_cmd(&shell->cmd);
-//		printf("Syntax error!.\n");
 		return (NULL);
 	}
 	free_tokenlst(&shell->tokens);
