@@ -1,6 +1,7 @@
 #include "minishell.h"
 #include "libft.h"
 
+/*
 int	op_count(const char *input)
 {
 	int	i;
@@ -26,6 +27,7 @@ int	op_count(const char *input)
 	}
 	return (count);
 }
+*/
 
 /**
  * @brief Prints the content of a tokens list
@@ -64,11 +66,16 @@ t_status	parse(const char *input, t_shell *shell)
 	shell->tokens = tokenizer(input);
 	if (shell->tokens)
 	{
+		expand_tokens(&shell->tokens, shell->env, shell->last_status);
 		if (lexer_validate(shell->tokens))
 		{
-			expand_tokens(&shell->tokens, shell->env, shell->last_status);
 			shell->cmd = parse_token(shell);
-			free_tokenlst(&shell->tokens);
+			if (!shell->cmd)
+			{
+				printf("Error: syntax error!\n");
+				return (FAILURE);	
+			}
+//			free_tokenlst(&shell->tokens);
 			return (SUCCESS);
 		}
 		else

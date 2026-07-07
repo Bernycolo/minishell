@@ -37,7 +37,7 @@ char	**add_arg(t_cmd *cmd, char *value)
 		free(cmd->arg);
 	return (new_arg);
 }
-
+/*
 int	count_words(t_token *tokens)
 {
 	int		count;
@@ -55,7 +55,7 @@ int	count_words(t_token *tokens)
 	}
 	return (count);
 }
-/*
+
 t_status	fill_cmd(t_shell **shell)
 {
 t_token	*curr;
@@ -87,7 +87,7 @@ t_status	manage_start(t_token *tokens, t_cmd **cmds, t_pstate *state)
 {
 	if (tokens->type == WORD)
 	{
-		(*cmds)->arg = add_arg(cmds, tokens->value);
+		(*cmds)->arg = add_arg(*cmds, tokens->value);
 		(*cmds)->argc++;
 		*state = PS_WORD;
 		return (SUCCESS);
@@ -95,6 +95,7 @@ t_status	manage_start(t_token *tokens, t_cmd **cmds, t_pstate *state)
 	else if (tokens->type == TRUNC || tokens->type == INPUT
 		|| tokens->type == APPEND || tokens->type == HEREDOC)
 	{
+		(*cmds)->redirs = new_redir(tokens->type);
 		*state = PS_REDIR;
 		return (SUCCESS);
 	}
@@ -103,11 +104,11 @@ t_status	manage_start(t_token *tokens, t_cmd **cmds, t_pstate *state)
 
 t_status	manage_word(t_token *tokens, t_cmd **cmds, t_pstate *state)
 {
-	t_cmd	*cmd;
+	t_cmd	*new;
 
 	if (tokens->type == WORD)
 	{
-		(*cmds)->arg = add_arg(cmds, tokens->value);
+		(*cmds)->arg = add_arg(*cmds, tokens->value);
 		(*cmds)->argc++;
 	}
 	else if (tokens->type == TRUNC || tokens->type == INPUT
@@ -118,10 +119,13 @@ t_status	manage_word(t_token *tokens, t_cmd **cmds, t_pstate *state)
 		}
 	else if (tokens->type == PIPE)
 	{
-		new_cmd(&cmd);
-		(*cmds)->next = cmd;
+		new_cmd(&new);
+		(*cmds)->next = new;
+		*cmds = new;
 		*state = PS_PIPE;
 	}
+	else
+		return (FAILURE);
 	return (SUCCESS);
 }
 
@@ -139,25 +143,49 @@ t_status	manage_redir(t_token *tokens, t_cmd **cmds, t_pstate *state)
 
 t_status	manage_after_redir(t_token *tokens, t_cmd **cmds, t_pstate *state)
 {
-	t_cmd	*cmd;
-
 	if (tokens->type == TRUNC || tokens->type == INPUT
 		|| tokens->type == APPEND || tokens->type == HEREDOC)
 	{
-		(*cmds)->redirs = (new_redir(tokens->type));
+		(*cmds)->redirs = new_redir(tokens->type);
 		*state = PS_REDIR;
 	}
 	else if (tokens->type == PIPE)
-	{
-		new_cmd(&cmd);
-		(*cmds)->next = cmd;
 		*state = PS_PIPE;
-	}
 	else if (tokens->type == WORD)
-		return (FAILURE);
+	{
+		(*cmds)->arg = add_arg(*cmds, tokens->value);
+		(*cmds)->argc++;
+		*state = PS_WORD;
+	}
 	return (SUCCESS);
 }
 
+t_status	manage_pipe(t_token *tokens, t_cmd **cmds, t_pstate *state)
+{
+	t_cmd	*new;
+
+	if (tokens->type == WORD)
+	{
+		new_cmd(&new);
+		(*cmds)->next = new;
+		*cmds = new;
+		new->arg = add_arg(new, tokens->value);
+		new->argc = 1;
+		*state = PS_WORD;
+		return (SUCCESS);
+	}
+		if (tokens->type == TRUNC || tokens->type == INPUT
+		|| tokens->type == APPEND || tokens->type == HEREDOC)
+	{
+		new_cmd(&new);
+		(*cmds)->next = new;
+		*cmds = new;
+		new->redirs = new_redir(tokens->type);
+		*state = PS_REDIR;
+		return (SUCCESS);
+	}
+	return (FAILURE);
+}
 
 t_status	fill_cmd(t_shell **shell)
 {
@@ -191,6 +219,12 @@ t_cmd	*parse_token(t_shell *shell)
 {
 	new_cmd(&shell->cmd);
 	if (!fill_cmd(&shell))
+	{
+		free_tokenlst(&shell->tokens);
+		free_cmd(&shell->cmd);
+//		printf("Syntax error!.\n");
 		return (NULL);
+	}
+	free_tokenlst(&shell->tokens);
 	return (shell->cmd);
 }

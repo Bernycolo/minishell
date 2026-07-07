@@ -79,6 +79,8 @@ t_status	check_last_token(t_token *token)
  */
 t_status	lexer_validate(t_token *token)
 {
+	if (!token)
+		return (FAILURE);
 	if (!check_first_token(token))
 		return (FAILURE);
 	while (token && token->next)

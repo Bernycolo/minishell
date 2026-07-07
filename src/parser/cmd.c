@@ -119,5 +119,7 @@ void	print_cmd(t_cmd *cmd)
 			redir = redir->next;
 		}
 	}
+	if (cmd->next)
+		print_cmd(cmd->next);
 	return ;
 }
