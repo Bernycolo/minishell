@@ -92,7 +92,7 @@ t_status	manage_start(t_token *tokens, t_cmd **cmds, t_pstate *state)
 		*state = PS_WORD;
 		return (SUCCESS);
 	}
-	else if (tokens->type == INPUT || tokens->type == TRUNC
+	else if (tokens->type == TRUNC || tokens->type == INPUT
 		|| tokens->type == APPEND || tokens->type == HEREDOC)
 	{
 		*state = PS_REDIR;
@@ -103,23 +103,61 @@ t_status	manage_start(t_token *tokens, t_cmd **cmds, t_pstate *state)
 
 t_status	manage_word(t_token *tokens, t_cmd **cmds, t_pstate *state)
 {
+	t_cmd	*cmd;
+
 	if (tokens->type == WORD)
 	{
 		(*cmds)->arg = add_arg(cmds, tokens->value);
 		(*cmds)->argc++;
 	}
-	else if (tokens->type == INPUT || tokens->type == TRUNC ||
-		tokens->type == APPEND || tokens->type == HEREDOC )
+	else if (tokens->type == TRUNC || tokens->type == INPUT
+		|| tokens->type == APPEND || tokens->type == HEREDOC )
 		{
 			(*cmds)->redirs = new_redir(tokens->type);
 			*state = PS_REDIR;
 		}
 	else if (tokens->type == PIPE)
 	{
-
+		new_cmd(&cmd);
+		(*cmds)->next = cmd;
+		*state = PS_PIPE;
 	}
-
+	return (SUCCESS);
 }
+
+t_status	manage_redir(t_token *tokens, t_cmd **cmds, t_pstate *state)
+{
+	if (tokens->type == WORD)
+	{
+		(*cmds)->redirs->target = ft_strdup(tokens->value);
+		*state = PS_AFTER_REDIR;
+		return (SUCCESS);
+	}
+	printf("parse error near '%s", tokens->value);
+	return (FAILURE);
+}
+
+t_status	manage_after_redir(t_token *tokens, t_cmd **cmds, t_pstate *state)
+{
+	t_cmd	*cmd;
+
+	if (tokens->type == TRUNC || tokens->type == INPUT
+		|| tokens->type == APPEND || tokens->type == HEREDOC)
+	{
+		(*cmds)->redirs = (new_redir(tokens->type));
+		*state = PS_REDIR;
+	}
+	else if (tokens->type == PIPE)
+	{
+		new_cmd(&cmd);
+		(*cmds)->next = cmd;
+		*state = PS_PIPE;
+	}
+	else if (tokens->type == WORD)
+		return (FAILURE);
+	return (SUCCESS);
+}
+
 
 t_status	fill_cmd(t_shell **shell)
 {

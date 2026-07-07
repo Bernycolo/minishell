@@ -389,11 +389,12 @@ Este es el error más importante que detecta este estado.
 
 **Tabla de transición en manage_after_redir**
 
-Token	Interpretación	Acción	Nuevo estado
-REDIR	nueva redirección	registrar operador	PS_REDIR
-PIPE	termina comando	crear nuevo comando	PS_PIPE
-END	fin	terminar	—
-WORD	argumento ilegal	error	—
+| Token | Interpretación | Acción | Nuevo estado |
+|:-----:|:-----:|:-----:|:-----:|
+| REDIR | nueva redirección | registrar operador | PS_REDIR |
+| PIPE | termina comando | crear nuevo comando | PS_PIPE |
+| END | fin | terminar | — |
+| WORD | argumento ilegal | error | — |
 
 Piensa en manage_after_redir como el parser diciendo:
 
