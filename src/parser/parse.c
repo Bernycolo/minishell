@@ -44,14 +44,14 @@ t_status	parse(const char *input, t_shell *shell)
 			shell->cmd = parse_token(shell);
 			if (!shell->cmd)
 			{
-				printf("Error1: syntax error!\n");
+				printf("Syntax error!\n");
 				return (FAILURE);	
 			}
 			return (SUCCESS);
 		}
 		else
 		{
-			printf("Error2: syntax error!\n");
+			printf("Lexer error!\n");
 			free_tokenlst(&shell->tokens);
 			return (FAILURE);
 		}

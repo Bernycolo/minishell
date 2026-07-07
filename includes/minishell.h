@@ -25,15 +25,12 @@
 # include "cmd.h"
 # include "status.h"
 # include "shell.h"
+# include "parser.h"
 
 # define BLUE "\033[34m" // azul
 # define GRAY "\033[37m" // gris
 # define RESET "\033[0m"
 # define SOFT_YELLOW "\033[38;5;229m" // amarillo pastel
 # define WARM_GRAY "\033[38;5;245m"   // gris cálido
-
-/*					Parser							*/
-t_status			parse(const char *input, t_shell *shell);
-t_cmd				*parse_token(t_shell *shell);
 
 #endif

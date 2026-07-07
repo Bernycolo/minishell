@@ -37,51 +37,6 @@ char	**add_arg(t_cmd *cmd, char *value)
 		free(cmd->arg);
 	return (new_arg);
 }
-/*
-int	count_words(t_token *tokens)
-{
-	int		count;
-	t_token	*curr;
-
-	count = 0;
-	curr = tokens;
-	while (curr)
-	{
-		if (curr->type == WORD)
-			count++;
-		else if (curr->type == PIPE)
-			break ;
-		curr = curr->next;
-	}
-	return (count);
-}
-
-t_status	fill_cmd(t_shell **shell)
-{
-t_token	*curr;
-t_pstate	state;
-
-curr = (*shell)->tokens;
-state = PS_START;
-while (curr)
-{
-if (curr->type == WORD)
-{
-(*shell)->cmd->arg = add_arg((*shell)->cmd, curr->value);
-(*shell)->cmd->argc++;
-}
-else if (curr->type == INPUT || curr->type == TRUNC
-|| curr->type == APPEND || curr->type == HEREDOC)
-{
-(*shell)->cmd->redirs = new_redir(curr->type,
-ft_strdup(curr->next->value));
-curr = curr->next;
-}
-curr = curr->next;
-}
-return (SUCCESS);
-}
-*/
 
 t_status	manage_start(t_token *tokens, t_cmd **cmds, t_pstate *state)
 {
@@ -99,6 +54,7 @@ t_status	manage_start(t_token *tokens, t_cmd **cmds, t_pstate *state)
 		*state = PS_REDIR;
 		return (SUCCESS);
 	}
+	print_syntax_error(tokens);
 	return (FAILURE);
 }
 
@@ -125,7 +81,10 @@ t_status	manage_word(t_token *tokens, t_cmd **cmds, t_pstate *state)
 		*state = PS_PIPE;
 	}
 	else
+	{
+		print_syntax_error(tokens);
 		return (FAILURE);
+	}
 	return (SUCCESS);
 }
 
@@ -144,7 +103,7 @@ t_status	manage_redir(t_token *tokens, t_cmd **cmds, t_pstate *state)
 		*state = PS_AFTER_REDIR;
 		return (SUCCESS);
 	}
-	printf("parse error near '%s'", tokens->value);
+	print_syntax_error(tokens);
 	return (FAILURE);
 }
 
@@ -165,7 +124,10 @@ t_status	manage_after_redir(t_token *tokens, t_cmd **cmds, t_pstate *state)
 		*state = PS_WORD;
 	}
 	else
+	{
+		print_syntax_error(tokens);
 		return (FAILURE);
+	}
 	return (SUCCESS);
 }
 
@@ -193,6 +155,7 @@ t_status	manage_pipe(t_token *tokens, t_cmd **cmds, t_pstate *state)
 		*state = PS_REDIR;
 		return (SUCCESS);
 	}
+	print_syntax_error(tokens);
 	return (FAILURE);
 }
 
