@@ -43,10 +43,7 @@ t_status	parse(const char *input, t_shell *shell)
 		{
 			shell->cmd = parse_token(shell);
 			if (!shell->cmd)
-			{
-				printf("Syntax error!\n");
 				return (FAILURE);	
-			}
 			return (SUCCESS);
 		}
 		else

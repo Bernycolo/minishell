@@ -90,8 +90,8 @@ t_status	create_token_node(const char *input, t_token **list, int *i)
 		word = read_word(input, i);
 		if (!word)
 		{
-			printf("bash: unexpected EOF while"
-				" looking for matching `\"\'\n");
+			write(2, "minishell: unexpected EOF while"
+				" looking for matching `\"\'\n", 57);
 			free_tokenlst(list);
 			return (FAILURE);
 		}

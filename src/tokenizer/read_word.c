@@ -71,6 +71,8 @@ char	*read_word(const char *input, int *i)
 	char	*tmp;
 
 	word = ft_strdup("");
+	if (!word)
+		return (NULL);
 	while (input[*i] && input[*i] != ' ' && !is_op(input, *i))
 	{
 		if (input[*i] == '"' || input[*i] == '\'')
@@ -87,6 +89,8 @@ char	*read_word(const char *input, int *i)
 				&& input[*i] != '"' && input[*i] != '\'')
 				(*i)++;
 			tmp = ft_substr(input, start, *i - start);
+			if (!tmp)
+				return (free(word), NULL);
 			word = ft_strjoin_free(word, tmp);
 		}
 	}
