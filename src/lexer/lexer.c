@@ -31,7 +31,7 @@ t_status	lexer_validate(t_token *tokens)
 			write(2, "minishell: lexical error: invalid character\n", 44);
 			return (FAILURE);
 		}
-		if (tokens->type == HEREDOC)
+		if (tokens->type != WORD)
 		{
 			if (!tokens->next || tokens->next->type != WORD || !tokens->next->value[0])
 			{

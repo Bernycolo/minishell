@@ -48,7 +48,6 @@ t_status	parse(const char *input, t_shell *shell)
 		}
 		else
 		{
-			printf("Lexer error!\n");
 			free_tokenlst(&shell->tokens);
 			return (FAILURE);
 		}
