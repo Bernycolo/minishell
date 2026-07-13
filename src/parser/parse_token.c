@@ -88,6 +88,82 @@ t_status	manage_word(t_token *tokens, t_cmd **cmds, t_pstate *state)
 	return (SUCCESS);
 }
 
+t_status	is_quoted(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str && str[i])
+	{
+		if (str[i] == '"' || str[i] == '\'')
+			return (SUCCESS);
+		i++;
+	}
+	return (FAILURE);
+}
+
+char    *remove_quotes(char *str)
+{
+	int     i;
+	int     j;
+	char    quote;
+	char    *result;
+	int     len;
+
+	if (!str)
+		return (NULL);
+	len = ft_strlen(str);
+	result = malloc(len + 1);
+	if (!result)
+		return (NULL);
+	i = 0;
+	j = 0;
+	while (str[i])
+	{
+		if (str[i] == '\'' || str[i] == '"')
+		{
+			quote = str[i++];        // abrir quoting
+			while (str[i] && str[i] != quote)
+				result[j++] = str[i++];  // copiar contenido interno
+			if (str[i] == quote)
+				i++;                    // cerrar quoting
+		}
+		else
+			result[j++] = str[i++];
+	}
+	result[j] = '\0';
+	return (result);
+}
+
+
+/*
+char	*remove_quotes(char *str)
+{
+	char	*result;
+	char	quote;
+	int		i;
+	int		j;
+	
+	if (is_quoted(str))
+	{
+		result = malloc(ft_strlen(str) - 1);
+		i = 0;
+		j = 0;
+		while (str[i] != '"' && str[i] != '\'')
+			result[j++] = str[i++];
+		quote = str[i++];
+		while (str[i] != quote)
+			result[j++] = str[i++];
+		i++;
+		while (str[i])
+			result[j++] = str[i++];
+		result[j] = '\0';
+		return (result);
+	}
+	else
+		return (ft_strdup(str));
+}
+*/
 t_status	manage_redir(t_token *tokens, t_cmd **cmds, t_pstate *state)
 {
 	t_redir	*last;
@@ -99,7 +175,13 @@ t_status	manage_redir(t_token *tokens, t_cmd **cmds, t_pstate *state)
 			return (FAILURE);
 		while (last && last->next)
 			last = last->next;
-		last->target = ft_strdup(tokens->value);
+		if (last->type != HEREDOC)
+			last->target = ft_strdup(tokens->value);
+		else
+		{
+			last->quoted = is_quoted(tokens->value);
+			last->target = remove_quotes(tokens->value);
+		}
 		*state = PS_AFTER_REDIR;
 		return (SUCCESS);
 	}

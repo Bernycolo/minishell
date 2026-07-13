@@ -7,6 +7,7 @@
 # include <readline/history.h>
 # include <readline/readline.h>
 # include <signal.h>    // signal, sigaction, sigemptyset, sigaddset, kill
+# include <stdbool.h>	
 # include <stdio.h>     // printf, perror
 # include <stdlib.h>    // malloc, free, getenv, exit
 # include <string.h>    // strerror

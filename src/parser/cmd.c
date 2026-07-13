@@ -35,6 +35,7 @@ t_redir	*new_redir(t_token_type type)
 	if (!redir)
 		return (NULL);
 	redir->type = type;
+	redir->quoted = false;
 	redir->target = NULL;
 	redir->next = NULL;
 	return (redir);
