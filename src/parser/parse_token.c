@@ -102,6 +102,8 @@ t_status	is_quoted(char *str)
 	return (FAILURE);
 }
 
+/*
+
 char    *remove_quotes(char *str)
 {
 	int     i;
@@ -134,6 +136,40 @@ char    *remove_quotes(char *str)
 	result[j] = '\0';
 	return (result);
 }
+*/
+
+
+char	*remove_quotes(char *str)
+{
+    char	*result;
+    int		i;
+    int		j;
+    char	quote;
+
+    result = malloc(ft_strlen(str) + 1);
+    if (!result)
+        return (NULL);
+    i = 0;
+    j = 0;
+    quote = 0;
+    while (str && str[i])
+    {
+        if (!quote && (str[i] == '\'' || str[i] == '"'))
+            quote = str[i++];
+        else if (quote && str[i] == quote)
+        {
+            quote = 0;
+            i++;
+        }
+	else
+        	result[j++] = str[i++];
+    }
+    result[j] = '\0';
+    return (result);
+}
+
+
+
 
 
 /*
@@ -146,24 +182,31 @@ char	*remove_quotes(char *str)
 	
 	if (is_quoted(str))
 	{
-		result = malloc(ft_strlen(str) - 1);
 		i = 0;
 		j = 0;
-		while (str[i] != '"' && str[i] != '\'')
-			result[j++] = str[i++];
-		quote = str[i++];
-		while (str[i] != quote)
-			result[j++] = str[i++];
-		i++;
+		result = malloc(ft_strlen(str));
 		while (str[i])
-			result[j++] = str[i++];
+		{
+			while (str[i] != '"' && str[i] != '\'')
+				result[j++] = str[i++];
+			quote = str[i++];
+			while (str[i] && str[i] != quote)
+				result[j++] = str[i++];
+			i++;
+//			while (str[i])
+//				result[j++] = str[i++];
+		}
 		result[j] = '\0';
 		return (result);
 	}
 	else
 		return (ft_strdup(str));
 }
+
 */
+
+
+
 t_status	manage_redir(t_token *tokens, t_cmd **cmds, t_pstate *state)
 {
 	t_redir	*last;
