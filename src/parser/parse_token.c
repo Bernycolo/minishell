@@ -102,42 +102,6 @@ t_status	is_quoted(char *str)
 	return (FAILURE);
 }
 
-/*
-
-char    *remove_quotes(char *str)
-{
-int     i;
-int     j;
-char    quote;
-char    *result;
-int     len;
-
-if (!str)
-return (NULL);
-len = ft_strlen(str);
-result = malloc(len + 1);
-if (!result)
-return (NULL);
-i = 0;
-j = 0;
-while (str[i])
-{
-if (str[i] == '\'' || str[i] == '"')
-{
-quote = str[i++];        // abrir quoting
-while (str[i] && str[i] != quote)
-result[j++] = str[i++];  // copiar contenido interno
-if (str[i] == quote)
-i++;                    // cerrar quoting
-}
-else
-result[j++] = str[i++];
-}
-result[j] = '\0';
-return (result);
-}
-*/
-
 char	*remove_quotes(char *str)
 {
 	char	*result;
@@ -167,38 +131,6 @@ char	*remove_quotes(char *str)
 	return (result);
 }
 
-/*
-char	*remove_quotes(char *str)
-{
-char	*result;
-char	quote;
-int		i;
-int		j;
-
-if (is_quoted(str))
-{
-i = 0;
-j = 0;
-result = malloc(ft_strlen(str));
-while (str[i])
-{
-while (str[i] != '"' && str[i] != '\'')
-result[j++] = str[i++];
-quote = str[i++];
-while (str[i] && str[i] != quote)
-result[j++] = str[i++];
-i++;
-//			while (str[i])
-//				result[j++] = str[i++];
-}
-result[j] = '\0';
-return (result);
-}
-else
-return (ft_strdup(str));
-}
-
-*/
 
 t_status	manage_redir(t_token *tokens, t_cmd **cmds, t_pstate *state)
 {
