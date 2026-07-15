@@ -41,6 +41,12 @@ t_redir	*new_redir(t_token_type type)
 	return (redir);
 }
 
+/**
+ * @brief Adds a redirection struct to a command list
+ * 
+ * @param cmd The command list
+ * @param type The redirection type
+ */
 void	add_redir(t_cmd *cmd, t_token_type type)
 {
 	t_redir	*new;
@@ -57,8 +63,6 @@ void	add_redir(t_cmd *cmd, t_token_type type)
 		curr = curr->next;
 	curr->next = new;
 }
-
-
 
 /**
  * @brief Frees the memory space occupied by a redir list
@@ -135,7 +139,7 @@ void	print_cmd(t_cmd *cmd)
 		i = 0;
 		while (redir)
 		{
-			printf("%d{%s}\n", redir->type, redir->target);
+			printf("%d{%s} is quoted: %d\n", redir->type, redir->target, redir->quoted);
 			redir = redir->next;
 		}
 	}

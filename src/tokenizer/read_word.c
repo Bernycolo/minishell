@@ -1,5 +1,5 @@
-#include "minishell.h"
 #include "libft.h"
+#include "minishell.h"
 
 /**
  * @brief Checks if the character at the given index is an operator
@@ -17,7 +17,7 @@ t_status	is_op(const char *input, int i)
 
 /**
  * @brief Returns the word to create a new token in quotes
- * 
+ *
  * @param input The input string
  * @param i A pointer to the current index (will be updated)
  * @return The string to tokenize
@@ -40,9 +40,22 @@ static char	*read_quoted(const char *input, int *i)
 	return (result);
 }
 
+static char	*read_unquoted(const char *input, int *i)
+{
+	int		start;
+	char	*result;
+
+	start = *i;
+	while (input[*i] && input[*i] != ' ' && !is_op(input, *i)
+		&& input[*i] != '"' && input[*i] != '\'')
+		(*i)++;
+	result = ft_substr(input, start, *i - start);
+	return (result);
+}
+
 /**
  * @brief Joins two strings and free the allocated memory of these
- * 
+ *
  * @param s1 The string one
  * @param s2 The string two
  * @return char* The join of the two strings
@@ -52,21 +65,20 @@ char	*ft_strjoin_free(char *s1, char *s2)
 	char	*join;
 
 	join = ft_strjoin(s1, s2);
-	free (s1);
-	free (s2);
+	free(s1);
+	free(s2);
 	return (join);
 }
 
 /**
  * @brief Returns the word to create a new token
- * 
+ *
  * @param input The input string
  * @param i A pointer to the current index (will be updated)
- * @return The string to tokenize 
+ * @return The string to tokenize
  */
 char	*read_word(const char *input, int *i)
 {
-	int		start;
 	char	*word;
 	char	*tmp;
 
@@ -84,11 +96,7 @@ char	*read_word(const char *input, int *i)
 		}
 		else
 		{
-			start = *i;
-			while (input[*i] && input[*i] != ' ' && !is_op(input, *i)
-				&& input[*i] != '"' && input[*i] != '\'')
-				(*i)++;
-			tmp = ft_substr(input, start, *i - start);
+			tmp = read_unquoted(input, i);
 			if (!tmp)
 				return (free(word), NULL);
 			word = ft_strjoin_free(word, tmp);

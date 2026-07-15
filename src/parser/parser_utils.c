@@ -1,10 +1,16 @@
-#include "minishell.h"
 #include "libft.h"
+#include "minishell.h"
 
+/**
+ * @brief Prints a syntax error in standar error
+ *
+ * @param token The token of the error
+ */
 void	print_syntax_error(t_token *token)
 {
 	if (!token)
-		write(2, "minishell: syntax error near unexpected token `newline`\n", 57);
+		write(2, "minishell: syntax error near unexpected token `newline`\n",
+			57);
 	else if (!token->value)
 	{
 		if (token->type == PIPE)

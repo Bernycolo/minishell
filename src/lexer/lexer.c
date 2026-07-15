@@ -1,6 +1,12 @@
-#include "minishell.h"
 #include "libft.h"
+#include "minishell.h"
 
+/**
+ * @brief Checks if a string contains no printable chars
+ *
+ * @param str The string to check
+ * @return SUCCESS if it is not contains, FAILURE otherwise
+ */
 t_status	contains_invalid_char(char *str)
 {
 	while (*str)
@@ -12,31 +18,32 @@ t_status	contains_invalid_char(char *str)
 	return (FAILURE);
 }
 
+/**
+ * @brief Validates the lexical structure of a token list
+ *
+ * @param tokens The token list to check
+ * @return SUCCESS if it is validated, FAILURE otherwise
+ */
 t_status	lexer_validate(t_token *tokens)
 {
 	while (tokens)
 	{
-		if (!tokens->value && tokens->type == WORD)
-		{
-			write(2, "minishell: lexical error: invalid token\n", 40);
-			return (FAILURE);
-		}
 		if (!tokens->value)
 		{
 			write(2, "minishell: lexical error: invalid token\n", 40);
 			return (FAILURE);
 		}
-		if (tokens->value && contains_invalid_char(tokens->value))
+		if (contains_invalid_char(tokens->value))
 		{
 			write(2, "minishell: lexical error: invalid character\n", 44);
 			return (FAILURE);
 		}
 		if (tokens->type != WORD)
 		{
-			if (!tokens->next || tokens->next->type != WORD || !tokens->next->value[0])
+			if (!tokens->next || tokens->next->type != WORD
+				|| !tokens->next->value || !tokens->next->value[0])
 			{
 				print_syntax_error(tokens);
-//				write(2, "minishell: syntax error near unexpected token `newline`\n", 57);
 				return (FAILURE);
 			}
 		}

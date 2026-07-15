@@ -1,214 +1,13 @@
 #include "minishell.h"
 #include "libft.h"
+#include "parse_token.h"
 
-int	count_arg(char **arg)
-{
-	int	i;
-
-	i = 0;
-	while (arg && arg[i])
-		i++;
-	return (i);
-}
-
-char	**add_arg(t_cmd *cmd, char *value)
-{
-	int		n_args;
-	int		i;
-	char	**new_arg;
-
-	n_args = count_arg(cmd->arg);
-	new_arg = malloc(sizeof(char *) * (n_args + 2));
-	i = 0;
-	if (cmd->arg)
-	{
-		while (cmd->arg[i])
-		{
-			new_arg[i] = ft_strdup(cmd->arg[i]);
-			i++;
-		}
-	}
-	new_arg[i] = ft_strdup(value);
-	new_arg[i + 1] = NULL;
-	i = 0;
-	while (cmd->arg && cmd->arg[i])
-		free(cmd->arg[i++]);
-	if (cmd->arg)
-		free(cmd->arg);
-	return (new_arg);
-}
-
-t_status	manage_start(t_token *tokens, t_cmd **cmds, t_pstate *state)
-{
-	if (tokens->type == WORD)
-	{
-		(*cmds)->arg = add_arg(*cmds, tokens->value);
-		(*cmds)->argc++;
-		*state = PS_WORD;
-		return (SUCCESS);
-	}
-	else if (tokens->type == TRUNC || tokens->type == INPUT
-			|| tokens->type == APPEND || tokens->type == HEREDOC)
-	{
-		add_redir(*cmds, tokens->type);
-		*state = PS_REDIR;
-		return (SUCCESS);
-	}
-	print_syntax_error(tokens);
-	return (FAILURE);
-}
-
-t_status	manage_word(t_token *tokens, t_cmd **cmds, t_pstate *state)
-{
-	t_cmd	*new;
-
-	if (tokens->type == WORD)
-	{
-		(*cmds)->arg = add_arg(*cmds, tokens->value);
-		(*cmds)->argc++;
-	}
-	else if (tokens->type == TRUNC || tokens->type == INPUT
-			|| tokens->type == APPEND || tokens->type == HEREDOC)
-	{
-		add_redir(*cmds, tokens->type);
-		*state = PS_REDIR;
-	}
-	else if (tokens->type == PIPE)
-	{
-		new_cmd(&new);
-		(*cmds)->next = new;
-		*cmds = new;
-		*state = PS_PIPE;
-	}
-	else
-	{
-		print_syntax_error(tokens);
-		return (FAILURE);
-	}
-	return (SUCCESS);
-}
-
-t_status	is_quoted(char *str)
-{
-	int	i;
-
-	i = 0;
-	while (str && str[i])
-	{
-		if (str[i] == '"' || str[i] == '\'')
-			return (SUCCESS);
-		i++;
-	}
-	return (FAILURE);
-}
-
-char	*remove_quotes(char *str)
-{
-	char	*result;
-	int		i;
-	int		j;
-	char	quote;
-
-	result = malloc(ft_strlen(str) + 1);
-	if (!result)
-		return (NULL);
-	i = 0;
-	j = 0;
-	quote = 0;
-	while (str && str[i])
-	{
-		if (!quote && (str[i] == '\'' || str[i] == '"'))
-			quote = str[i++];
-		else if (quote && str[i] == quote)
-		{
-			quote = 0;
-			i++;
-		}
-		else
-			result[j++] = str[i++];
-	}
-	result[j] = '\0';
-	return (result);
-}
-
-
-t_status	manage_redir(t_token *tokens, t_cmd **cmds, t_pstate *state)
-{
-	t_redir	*last;
-
-	if (tokens->type == WORD)
-	{
-		last = (*cmds)->redirs;
-		if (!last)
-			return (FAILURE);
-		while (last && last->next)
-			last = last->next;
-		if (last->type != HEREDOC)
-			last->target = ft_strdup(tokens->value);
-		else
-		{
-			last->quoted = is_quoted(tokens->value);
-			last->target = remove_quotes(tokens->value);
-		}
-		*state = PS_AFTER_REDIR;
-		return (SUCCESS);
-	}
-	print_syntax_error(tokens);
-	return (FAILURE);
-}
-
-t_status	manage_after_redir(t_token *tokens, t_cmd **cmds, t_pstate *state)
-{
-	if (tokens->type == TRUNC || tokens->type == INPUT
-			|| tokens->type == APPEND || tokens->type == HEREDOC)
-	{
-		add_redir(*cmds, tokens->type);
-		*state = PS_REDIR;
-	}
-	else if (tokens->type == PIPE)
-		*state = PS_PIPE;
-	else if (tokens->type == WORD)
-	{
-		(*cmds)->arg = add_arg(*cmds, tokens->value);
-		(*cmds)->argc++;
-		*state = PS_WORD;
-	}
-	else
-	{
-		print_syntax_error(tokens);
-		return (FAILURE);
-	}
-	return (SUCCESS);
-}
-
-t_status	manage_pipe(t_token *tokens, t_cmd **cmds, t_pstate *state)
-{
-	t_cmd	*new;
-
-	if (tokens->type == WORD)
-	{
-		new_cmd(&new);
-		(*cmds)->next = new;
-		*cmds = new;
-		new->arg = add_arg(new, tokens->value);
-		new->argc = 1;
-		*state = PS_WORD;
-		return (SUCCESS);
-	}
-	if (tokens->type == TRUNC || tokens->type == INPUT
-			|| tokens->type == APPEND || tokens->type == HEREDOC)
-	{
-		new_cmd(&new);
-		(*cmds)->next = new;
-		*cmds = new;
-		add_redir(new, tokens->type);
-		*state = PS_REDIR;
-		return (SUCCESS);
-	}
-	print_syntax_error(tokens);
-	return (FAILURE);
-}
-
+/**
+ * @brief Completes a command list
+ * 
+ * @param shell The golbal status of minishell
+ * @return SUCCESS if its completed, FAILURE otherwise 
+ */
 t_status	fill_cmd(t_shell **shell)
 {
 	t_pstate	state;
@@ -237,6 +36,12 @@ t_status	fill_cmd(t_shell **shell)
 	return (result_state);
 }
 
+/**
+ * @brief Parses a token list
+ * 
+ * @param shell The global status of minishell
+ * @return The command parsed 
+ */
 t_cmd	*parse_token(t_shell *shell)
 {
 	new_cmd(&shell->cmd);

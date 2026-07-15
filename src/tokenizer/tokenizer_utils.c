@@ -1,5 +1,5 @@
-#include "minishell.h"
 #include "libft.h"
+#include "minishell.h"
 
 /**
  * @brief Creates a new token object
@@ -69,7 +69,7 @@ void	free_tokenlst(t_token **token_lst)
 
 /**
  * @brief Creates an operator object
- * 
+ *
  * @param type_op The number of characters of the operator
  * @param type The type of the operator
  * @param value The value of the operator read from the input
@@ -131,7 +131,7 @@ void	create_and_add_token(t_token **list, const char *value,
 	if (!token)
 	{
 		if (token_value)
-			free (token_value);
+			free(token_value);
 		return ;
 	}
 	add_token(list, token);

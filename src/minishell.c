@@ -18,7 +18,7 @@ int	main(int ac, char **av, char **envp)
 			{
 				add_history(str);
 				print_cmd(shell.cmd);
-				printf("exit status: %d", shell.last_status);
+				printf("exit status: %d\n", shell.last_status);
 				free_cmd(&shell.cmd);
 			}
 			free(str);

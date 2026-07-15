@@ -1,11 +1,11 @@
-#include "minishell.h"
 #include "libft.h"
+#include "minishell.h"
 
 /**
  * @brief Initializes a shell struct
- * 
+ *
  * @param shell A pointer to the shell struct
- * @param envp The system environment variables 
+ * @param envp The system environment variables
  * @return char* The prompt of the shell
  */
 char	*init_shell(t_shell *shell, char **envp)
@@ -23,7 +23,7 @@ char	*init_shell(t_shell *shell, char **envp)
 
 /**
  * @brief Frees the memory space occupied by environment and command list
- * 
+ *
  * @param shell A pointer to the shell struct
  */
 void	end_shell(t_shell *shell)

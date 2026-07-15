@@ -69,11 +69,11 @@ static char	*value_op(t_token_type type)
 
 /**
  * @brief Create a token node object
- * 
+ *
  * @param input The string from to extract the token
  * @param list The list of tokens
  * @param i A pointer to the current index (will be updated)
- * @return SUCCESS if it is created the token, FAILURE otherwise 
+ * @return SUCCESS if it is created the token, FAILURE otherwise
  */
 t_status	create_token_node(const char *input, t_token **list, int *i)
 {
@@ -91,7 +91,8 @@ t_status	create_token_node(const char *input, t_token **list, int *i)
 		if (!word)
 		{
 			write(2, "minishell: unexpected EOF while"
-				" looking for matching `\"\'\n", 57);
+				" looking for matching `\"\'\n",
+				57);
 			free_tokenlst(list);
 			return (FAILURE);
 		}
@@ -109,8 +110,8 @@ t_status	create_token_node(const char *input, t_token **list, int *i)
  */
 t_token	*tokenizer(const char *input)
 {
-	t_token			*list;
-	int				i;
+	t_token	*list;
+	int		i;
 
 	list = NULL;
 	i = 0;

@@ -3,7 +3,7 @@
 
 /**
  * @brief Prints the content of a tokens list
- * 
+ *
  * @param token_list The tokens list to print
  */
 void	print_token_list(t_token *token_list)
@@ -28,11 +28,18 @@ void	print_token_list(t_token *token_list)
 		if (token->type == PIPE)
 			type_op = ft_strdup("PIPE");
 		printf("value: %s \t type: %s \n", token->value, type_op);
-		free (type_op);
+		free(type_op);
 		token = token->next;
 	}
 }
 
+/**
+ * @brief Parses a input in a command list
+ * 
+ * @param input The input to parse
+ * @param shell The global status of minishell
+ * @return SUCCESS if it is parsed, FAILURE otherwise
+ */
 t_status	parse(const char *input, t_shell *shell)
 {
 	shell->tokens = tokenizer(input);
@@ -43,7 +50,7 @@ t_status	parse(const char *input, t_shell *shell)
 		{
 			shell->cmd = parse_token(shell);
 			if (!shell->cmd)
-				return (FAILURE);	
+				return (FAILURE);
 			return (SUCCESS);
 		}
 		else

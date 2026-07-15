@@ -50,7 +50,6 @@ void	expand_tokens(t_token **list, t_env *env, int last_status)
 			{
 				free (curr->value);
 				curr->value = word;
-
 			}
 		}
 		prev = curr;
