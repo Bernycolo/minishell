@@ -8,7 +8,6 @@
  * @param curr The token to delete
  * @return The token's list with the token deleted
  */
-/*
 static t_token	*del_token(t_token **list, t_token *prev, t_token *curr)
 {
 	t_token	*next;
@@ -24,7 +23,7 @@ static t_token	*del_token(t_token **list, t_token *prev, t_token *curr)
 	free (curr);
 	return (next);
 }
-*/
+
 /**
  * @brief Expands the content of the tokens in the list
  * 
@@ -45,15 +44,14 @@ void	expand_tokens(t_token **list, t_env *env, int last_status)
 		if (curr->type == WORD && !(prev && prev->type == HEREDOC))
 		{
 			word = expand_word(curr->value, env, last_status);
-/*			if (!word || !word[0])
-			{
-				if (word)
-					free(word);
+			if (!word)
 				curr = del_token(list, prev, curr);
-				continue ;
+			else
+			{
+				free (curr->value);
+				curr->value = word;
+
 			}
-*/			free (curr->value);
-			curr->value = word;
 		}
 		prev = curr;
 		curr = curr->next;

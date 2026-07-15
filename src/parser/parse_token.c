@@ -48,7 +48,7 @@ t_status	manage_start(t_token *tokens, t_cmd **cmds, t_pstate *state)
 		return (SUCCESS);
 	}
 	else if (tokens->type == TRUNC || tokens->type == INPUT
-		|| tokens->type == APPEND || tokens->type == HEREDOC)
+			|| tokens->type == APPEND || tokens->type == HEREDOC)
 	{
 		add_redir(*cmds, tokens->type);
 		*state = PS_REDIR;
@@ -68,11 +68,11 @@ t_status	manage_word(t_token *tokens, t_cmd **cmds, t_pstate *state)
 		(*cmds)->argc++;
 	}
 	else if (tokens->type == TRUNC || tokens->type == INPUT
-		|| tokens->type == APPEND || tokens->type == HEREDOC )
-		{
-			add_redir(*cmds, tokens->type);
-			*state = PS_REDIR;
-		}
+			|| tokens->type == APPEND || tokens->type == HEREDOC)
+	{
+		add_redir(*cmds, tokens->type);
+		*state = PS_REDIR;
+	}
 	else if (tokens->type == PIPE)
 	{
 		new_cmd(&new);
@@ -106,29 +106,59 @@ t_status	is_quoted(char *str)
 
 char    *remove_quotes(char *str)
 {
-	int     i;
-	int     j;
-	char    quote;
-	char    *result;
-	int     len;
+int     i;
+int     j;
+char    quote;
+char    *result;
+int     len;
 
-	if (!str)
-		return (NULL);
-	len = ft_strlen(str);
-	result = malloc(len + 1);
+if (!str)
+return (NULL);
+len = ft_strlen(str);
+result = malloc(len + 1);
+if (!result)
+return (NULL);
+i = 0;
+j = 0;
+while (str[i])
+{
+if (str[i] == '\'' || str[i] == '"')
+{
+quote = str[i++];        // abrir quoting
+while (str[i] && str[i] != quote)
+result[j++] = str[i++];  // copiar contenido interno
+if (str[i] == quote)
+i++;                    // cerrar quoting
+}
+else
+result[j++] = str[i++];
+}
+result[j] = '\0';
+return (result);
+}
+*/
+
+char	*remove_quotes(char *str)
+{
+	char	*result;
+	int		i;
+	int		j;
+	char	quote;
+
+	result = malloc(ft_strlen(str) + 1);
 	if (!result)
 		return (NULL);
 	i = 0;
 	j = 0;
-	while (str[i])
+	quote = 0;
+	while (str && str[i])
 	{
-		if (str[i] == '\'' || str[i] == '"')
+		if (!quote && (str[i] == '\'' || str[i] == '"'))
+			quote = str[i++];
+		else if (quote && str[i] == quote)
 		{
-			quote = str[i++];        // abrir quoting
-			while (str[i] && str[i] != quote)
-				result[j++] = str[i++];  // copiar contenido interno
-			if (str[i] == quote)
-				i++;                    // cerrar quoting
+			quote = 0;
+			i++;
 		}
 		else
 			result[j++] = str[i++];
@@ -136,76 +166,39 @@ char    *remove_quotes(char *str)
 	result[j] = '\0';
 	return (result);
 }
-*/
-
-
-char	*remove_quotes(char *str)
-{
-    char	*result;
-    int		i;
-    int		j;
-    char	quote;
-
-    result = malloc(ft_strlen(str) + 1);
-    if (!result)
-        return (NULL);
-    i = 0;
-    j = 0;
-    quote = 0;
-    while (str && str[i])
-    {
-        if (!quote && (str[i] == '\'' || str[i] == '"'))
-            quote = str[i++];
-        else if (quote && str[i] == quote)
-        {
-            quote = 0;
-            i++;
-        }
-	else
-        	result[j++] = str[i++];
-    }
-    result[j] = '\0';
-    return (result);
-}
-
-
-
-
 
 /*
 char	*remove_quotes(char *str)
 {
-	char	*result;
-	char	quote;
-	int		i;
-	int		j;
-	
-	if (is_quoted(str))
-	{
-		i = 0;
-		j = 0;
-		result = malloc(ft_strlen(str));
-		while (str[i])
-		{
-			while (str[i] != '"' && str[i] != '\'')
-				result[j++] = str[i++];
-			quote = str[i++];
-			while (str[i] && str[i] != quote)
-				result[j++] = str[i++];
-			i++;
+char	*result;
+char	quote;
+int		i;
+int		j;
+
+if (is_quoted(str))
+{
+i = 0;
+j = 0;
+result = malloc(ft_strlen(str));
+while (str[i])
+{
+while (str[i] != '"' && str[i] != '\'')
+result[j++] = str[i++];
+quote = str[i++];
+while (str[i] && str[i] != quote)
+result[j++] = str[i++];
+i++;
 //			while (str[i])
 //				result[j++] = str[i++];
-		}
-		result[j] = '\0';
-		return (result);
-	}
-	else
-		return (ft_strdup(str));
+}
+result[j] = '\0';
+return (result);
+}
+else
+return (ft_strdup(str));
 }
 
 */
-
-
 
 t_status	manage_redir(t_token *tokens, t_cmd **cmds, t_pstate *state)
 {
@@ -235,7 +228,7 @@ t_status	manage_redir(t_token *tokens, t_cmd **cmds, t_pstate *state)
 t_status	manage_after_redir(t_token *tokens, t_cmd **cmds, t_pstate *state)
 {
 	if (tokens->type == TRUNC || tokens->type == INPUT
-		|| tokens->type == APPEND || tokens->type == HEREDOC)
+			|| tokens->type == APPEND || tokens->type == HEREDOC)
 	{
 		add_redir(*cmds, tokens->type);
 		*state = PS_REDIR;
@@ -270,8 +263,8 @@ t_status	manage_pipe(t_token *tokens, t_cmd **cmds, t_pstate *state)
 		*state = PS_WORD;
 		return (SUCCESS);
 	}
-		if (tokens->type == TRUNC || tokens->type == INPUT
-		|| tokens->type == APPEND || tokens->type == HEREDOC)
+	if (tokens->type == TRUNC || tokens->type == INPUT
+			|| tokens->type == APPEND || tokens->type == HEREDOC)
 	{
 		new_cmd(&new);
 		(*cmds)->next = new;

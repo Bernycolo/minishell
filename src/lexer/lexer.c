@@ -35,7 +35,8 @@ t_status	lexer_validate(t_token *tokens)
 		{
 			if (!tokens->next || tokens->next->type != WORD || !tokens->next->value[0])
 			{
-				write(2, "minishell: syntax error near unexpected token `newline`\n", 57);
+				print_syntax_error(tokens);
+//				write(2, "minishell: syntax error near unexpected token `newline`\n", 57);
 				return (FAILURE);
 			}
 		}
