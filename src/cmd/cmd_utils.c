@@ -1,7 +1,7 @@
 #include "minishell.h"
 
 /**
- * @brief Frees the memory space occupied by a redir list
+ * @brief Frees the memory used by the redirection list
  * 
  * @param redir A pointer to the head of the redir list 
  */
@@ -19,7 +19,7 @@ static void	free_redir(t_redir *redir)
 }
 
 /**
- * @brief Frees the memory space occupied by a command list
+ * @brief Frees the memory used by the command list
  *
  * @param cmd A pointer to the head of the command list
  */
@@ -51,7 +51,7 @@ void	free_cmd(t_cmd **cmd)
 }
 
 /**
- * @brief Prints the elements of a command object
+ * @brief Prints the contents of a command node
  * 
  * @param cmd The command object to print
  */

@@ -2,7 +2,7 @@
 #include "libft.h"
 
 /**
- * @brief Prints the content of a tokens list
+ * @brief Prints the contents of the tokens list
  *
  * @param token_list The tokens list to print
  */
@@ -34,7 +34,7 @@ void	print_token_list(t_token *token_list)
 }
 
 /**
- * @brief Parses a input in a command list
+ * @brief Parses an input into a command list
  * 
  * @param input The input to parse
  * @param shell The global status of minishell

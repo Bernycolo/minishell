@@ -6,7 +6,7 @@
  *
  * @param shell A pointer to the shell struct
  * @param envp The system environment variables
- * @return char* The prompt of the shell
+ * @return The prompt of the shell
  */
 char	*init_shell(t_shell *shell, char **envp)
 {

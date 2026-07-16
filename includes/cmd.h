@@ -3,6 +3,11 @@
 
 # include "structs.h"
 
+/**
+ * @enum e_pstate
+ * @brief Represents the internal states of the parser
+ * 
+ */
 typedef enum e_pstate
 {
 	PS_START,
@@ -14,7 +19,7 @@ typedef enum e_pstate
 
 /**
  * @struct s_redir
- * @brief Represents a single redirection associated with a command.
+ * @brief Represents a single redirection attached to a command.
  *
  */
 typedef struct s_redir
@@ -27,7 +32,7 @@ typedef struct s_redir
 
 /**
  * @struct s_cmd
- * @brief Represents a node in the command linked list
+ * @brief Represents a node in the parsed command list
  *
  */
 typedef struct s_cmd

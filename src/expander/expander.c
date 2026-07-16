@@ -25,11 +25,11 @@ static t_token	*del_token(t_token **list, t_token *prev, t_token *curr)
 }
 
 /**
- * @brief Expands the content of the tokens in the list
+ * @brief Expands the content of the tokens list
  * 
  * @param list The token's list
  * @param env The environment list
- * @param last_status The last state returned by the system
+ * @param last_status The last exit status returned by the shell
  */
 void	expand_tokens(t_token **list, t_env *env, int last_status)
 {

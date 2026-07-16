@@ -84,7 +84,7 @@ void	env_unset(t_env **env, const char *key)
 /**
  * @brief Frees the memory space occupied by environment
  *
- * @param env A pounter to the head of the environment list
+ * @param env A pointer to the head of the environment list
  */
 void	free_env(t_env **env)
 {

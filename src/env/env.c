@@ -2,11 +2,11 @@
 #include "libft.h"
 
 /**
- * @brief Creates a new node of environment list
+ * @brief Creates a new node for the environment list
  *
  * @param key The name of the new environment variable
  * @param value The value of the new environment variable
- * @return t_env* The new node of the new environment variable
+ * @return The new node of the new environment variable
  */
 t_env	*new_env(const char *key, const char *value)
 {
@@ -33,7 +33,7 @@ t_env	*new_env(const char *key, const char *value)
 }
 
 /**
- * @brief Adds a node to the environment list
+ * @brief Adds a node to the end of the environment list
  *
  * @param list The head of the environment list
  * @param new A pointer to the new node to add
@@ -56,7 +56,7 @@ void	add_env(t_env **list, t_env *new)
 }
 
 /**
- * @brief Initializes the environment list from the system environment variables
+ * @brief Initializes the environment list from envp
  *
  * @param list The head of the environment list
  * @param envp The system environment variables

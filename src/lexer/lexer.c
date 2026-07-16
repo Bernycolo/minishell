@@ -1,8 +1,8 @@
-#include "libft.h"
 #include "minishell.h"
+#include "libft.h"
 
 /**
- * @brief Checks if a string contains no printable chars
+ * @brief Checks whether a string contains non-printable characters
  *
  * @param str The string to check
  * @return SUCCESS if it is not contains, FAILURE otherwise
@@ -19,7 +19,7 @@ t_status	contains_invalid_char(char *str)
 }
 
 /**
- * @brief Validates the lexical structure of a token list
+ * @brief Validates the lexical structure of the token list
  *
  * @param tokens The token list to check
  * @return SUCCESS if it is validated, FAILURE otherwise

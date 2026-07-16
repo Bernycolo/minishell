@@ -16,7 +16,7 @@ t_status	is_op(const char *input, int i)
 }
 
 /**
- * @brief Returns the word to create a new token in quotes
+ * @brief Reads a quoted word and returns it as a token fragment
  *
  * @param input The input string
  * @param i A pointer to the current index (will be updated)
@@ -40,6 +40,13 @@ static char	*read_quoted(const char *input, int *i)
 	return (result);
 }
 
+/**
+ * @brief Reads an unquoted word and returns it as a token fragment
+ * 
+ * @param input The input string
+ * @param i A pointer to the current index (wil be updated)
+ * @return The string to tokenize
+ */
 static char	*read_unquoted(const char *input, int *i)
 {
 	int		start;
@@ -54,11 +61,11 @@ static char	*read_unquoted(const char *input, int *i)
 }
 
 /**
- * @brief Joins two strings and free the allocated memory of these
+ * @brief Joins two strings and frees the allocated memory
  *
  * @param s1 The string one
  * @param s2 The string two
- * @return char* The join of the two strings
+ * @return The join of the two strings
  */
 char	*ft_strjoin_free(char *s1, char *s2)
 {
@@ -71,7 +78,7 @@ char	*ft_strjoin_free(char *s1, char *s2)
 }
 
 /**
- * @brief Returns the word to create a new token
+ * @brief Reads a word from the input and returns it
  *
  * @param input The input string
  * @param i A pointer to the current index (will be updated)

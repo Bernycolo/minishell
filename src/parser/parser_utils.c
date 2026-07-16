@@ -1,5 +1,5 @@
-#include "libft.h"
 #include "minishell.h"
+#include "libft.h"
 
 /**
  * @brief Prints a syntax error in standar error
