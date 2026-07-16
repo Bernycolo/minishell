@@ -1,5 +1,5 @@
-#include "libft.h"
 #include "minishell.h"
+#include "libft.h"
 
 /**
  * @brief Checks if the character at the given index is an operator

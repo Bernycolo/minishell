@@ -1,5 +1,5 @@
-#include "libft.h"
 #include "minishell.h"
+#include "libft.h"
 
 /**
  * @brief Creates a new token object

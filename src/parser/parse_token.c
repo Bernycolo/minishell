@@ -1,5 +1,4 @@
 #include "minishell.h"
-#include "libft.h"
 #include "parse_token.h"
 
 /**
@@ -8,7 +7,7 @@
  * @param shell The golbal status of minishell
  * @return SUCCESS if its completed, FAILURE otherwise 
  */
-t_status	fill_cmd(t_shell **shell)
+static t_status	fill_cmd(t_shell **shell)
 {
 	t_pstate	state;
 	t_status	result_state;

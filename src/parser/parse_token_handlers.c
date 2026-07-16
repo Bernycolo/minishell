@@ -1,6 +1,6 @@
 #include "minishell.h"
-#include "libft.h"
 #include "parse_token.h"
+#include "libft.h"
 
 /**
  * @brief Process the startup token

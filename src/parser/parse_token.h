@@ -1,9 +1,9 @@
 #ifndef PARSE_TOKEN_H
 # define PARSE_TOKEN_H
 
-# include "minishell.h"
+# include "structs.h"
 
-t_status	fill_cmd(t_shell **shell);
+//t_status	fill_cmd(t_shell **shell);
 t_status	manage_start(t_token *tokens, t_cmd **cmds, t_pstate *state);
 t_status	manage_word(t_token *tokens, t_cmd **cmds, t_pstate *state);
 t_status	manage_redir(t_token *tokens, t_cmd **cmds, t_pstate *state);

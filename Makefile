@@ -14,12 +14,13 @@ GREEN = \033[0;32m
 RESET = \033[0m
 
 # Files
-SRC = 	parser/parse.c parser/parse_token.c parser/parse_token_handlers.c parser/parse_token_utils.c \
-		parser/parser_utils.c parser/cmd.c \
+SRC = 	parser/parse.c parser/parse_token.c parser/parse_token_handlers.c \
+		parser/parse_token_utils.c parser/parser_utils.c \
 		tokenizer/tokenizer.c tokenizer/tokenizer_utils.c tokenizer/read_word.c \
-		lexer/lexer.c \
-		env/env.c env/env_utils.c \
 		expander/expander.c expander/expander_utils.c \
+		lexer/lexer.c \
+		cmd/cmd.c cmd/cmd_utils.c \
+		env/env.c env/env_utils.c \
 		utils/utils.c \
 		minishell.c
 OBJ = $(SRC:%.c=$(OBJ_DIR)/%.o)
