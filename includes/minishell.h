@@ -28,6 +28,9 @@
 # include "shell.h"
 # include "parser.h"
 
+# include "builtins.h"
+# include "executor.h"
+
 # define BLUE "\033[34m" // azul
 # define GRAY "\033[37m" // gris
 # define RESET "\033[0m"

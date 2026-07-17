@@ -12,13 +12,12 @@ int	main(int ac, char **av, char **envp)
 	{
 		prompt = init_shell(&shell, envp);
 		str = readline(prompt);
-		while (str != NULL && str[0] != 0)
+		while (1)
 		{
 			if (parse(str, &shell))
 			{
 				add_history(str);
-				print_cmd(shell.cmd);
-				printf("exit status: %d\n", shell.last_status);
+				executor(&shell);
 				free_cmd(&shell.cmd);
 			}
 			free(str);
