@@ -9,9 +9,12 @@
  */
 t_status	contains_invalid_char(char *str)
 {
+	unsigned char	c;
+
 	while (*str)
 	{
-		if (!ft_isprint(*str))
+		c = (unsigned char)*str;
+		if (c < 32 || c == 127)
 			return (SUCCESS);
 		str++;
 	}

@@ -12,6 +12,7 @@ void	builtin_cd(t_shell *msh)
 	char	*oldpwd;
 
 	path = NULL;
+	msh->last_status = 0;
 	if (msh->cmd->argc > 2)
 		return (printf("cd :too many arguments\n"), (void) NULL);
 	oldpwd = getcwd(NULL, 0);
@@ -24,9 +25,12 @@ void	builtin_cd(t_shell *msh)
 	else if (msh->cmd->argc == 1)
 		path = env_get(msh->env, "HOME");
 	if (chdir(path))
+	{
+		msh->last_status = 1;
 		perror("cd");
+	}
 	else
-		builtin_pwd(msh);
+		env_set(&msh->env, "PWD", path);
 	free(path);
 	free(oldpwd);
 }
