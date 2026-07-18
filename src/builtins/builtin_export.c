@@ -6,7 +6,7 @@ static t_env	*sort_list(t_env *lst);
 static t_env	*copy_list(t_env *lst);
 static int		check_export(char *arg);
 
-void	ft_export(t_shell *msh)
+void	builtin_export(t_shell *msh)
 {
 	int	i;
 

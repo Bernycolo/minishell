@@ -1,29 +1,48 @@
 #include "minishell.h"
 #include "libft.h"
-
+/*
 static void	ft_change_oldpwd_env(t_shell *info);
 static void	ft_change_pwd_env(t_shell *msh);
 static void	add_arg_to_env(char *var, t_shell *msh);
 static int	check_variable(char *name, char *value, t_shell *info);
-
-void	ft_cd(t_shell *msh)
+*/
+void	builtin_cd(t_shell *msh)
 {
 	char	*path;
+	char	*oldpwd;
 
 	path = NULL;
 	if (msh->cmd->argc > 2)
 		return (printf("cd :too many arguments\n"), (void) NULL);
-	ft_change_oldpwd_env(msh);
+	oldpwd = getcwd(NULL, 0);
+	env_set(&msh->env, "OLDPWD", oldpwd);
+	if (msh->cmd->argc == 2)
+	{
+		path = ft_strjoin(oldpwd, "/");
+		path = ft_strjoin_free(path, ft_strdup(msh->cmd->arg[1]));
+	}
+	else if (msh->cmd->argc == 1)
+		path = env_get(msh->env, "HOME");
+	if (chdir(path))
+		perror("cd");
+	else
+		builtin_pwd(msh);
+	free(path);
+	free(oldpwd);
+}
+/*	ft_change_oldpwd_env(msh);
 	if (msh->cmd->arg[1])
 		path = ft_strdup(msh->cmd->arg[1]);
 	else if (!path)
-		path = ft_strdup(getenv("HOME"));
+		path = ft_strdup(env_get(msh->env, "HOME"));
 	if (chdir(path))
 		perror("cd");
 	else
 		ft_pwd(msh);
-	ft_memfree(path);
+	if (path)
+		free(path);
 	ft_change_pwd_env(msh);
+
 }
 
 static void	ft_change_oldpwd_env(t_shell *info)
@@ -34,8 +53,10 @@ static void	ft_change_oldpwd_env(t_shell *info)
 	path = getcwd(NULL, 0);
 	to_send = ft_strjoin("OLDPWD=", path);
 	add_arg_to_env(to_send, info);
-	ft_memfree(to_send);
-	ft_memfree(path);
+	if (to_send)
+		free(to_send);
+	if (path)
+		free(path);
 }
 
 static void	ft_change_pwd_env(t_shell *msh)
@@ -49,12 +70,14 @@ static void	ft_change_pwd_env(t_shell *msh)
 		if (strcmp(tmp->key, "PWD") == 0) // < atención función no permitida
 		{
 			pwd = getcwd(NULL, 0);
-			ft_memfree(tmp->value);
+			if (tmp->value)
+				free(tmp->value);
 			tmp->value = ft_strdup(pwd);
 		}
 		tmp = tmp->next;
 	}
-	ft_memfree(pwd);
+	if (pwd)
+		free(pwd);
 }
 
 static void	add_arg_to_env(char *var, t_shell *msh)
@@ -95,3 +118,5 @@ static int	check_variable(char *name, char *value, t_shell *info)
 	}
 	return (0);
 }
+
+*/

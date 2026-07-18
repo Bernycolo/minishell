@@ -28,7 +28,7 @@ void	builtin_exit(t_shell *msh)
 {
 	ft_putendl_fd("exit", 2);
 	msh->last_status = check_exit_args(msh);
-	if (msh->last_status != 1)
+	if (msh->last_status == 0)
 		exit(msh->last_status);
 	ft_putendl_fd("exit: too many arguments", 2);
 }

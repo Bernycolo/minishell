@@ -20,6 +20,7 @@ t_status	prepare_redirections(t_shell *shell)
 	(void)shell;
 	return (SUCCESS);
 }
+
 void	execute_single(t_shell *shell)
 {
 	classify_cmd(&shell->cmd);
@@ -39,14 +40,12 @@ void	executor(t_shell *shell)
 	if (!shell->cmd)
 	{
 		printf("no command\n");
-		return;
+		return ;
 	}
 	if (!prepare_redirections(shell))
-		return;
+		return ;
 	if (!shell->cmd->next)
-	{
 		execute_single(shell);
-	}
 	else
 		execute_pipeline(shell);
 }

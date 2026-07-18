@@ -1,7 +1,7 @@
 #include "minishell.h"
 #include "libft.h"
 
-void	ft_env(t_shell *msh)
+void	builtin_env(t_shell *msh)
 {
 	t_env	*tmp;
 

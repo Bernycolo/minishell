@@ -22,12 +22,12 @@ SRC = 	parser/parse.c parser/parse_token.c parser/parse_token_handlers.c \
 		cmd/cmd.c cmd/cmd_utils.c \
 		env/env.c env/env_utils.c \
 		utils/utils.c \
-		builtins/builtcheck.c builtins/builtin_exit.c \
-		executor/exec.c \
+		builtins/builtcheck.c builtins/builtin_exit.c builtins/builtin_env.c \
+		builtins/builtin_echo.c builtins/builtin_pwd.c \
+		executor/exec.c builtins/builtin_cd.c \
 		minishell.c
-#  		builtins/builtin_cd.c builtins/builtin_echo.c \
-		builtins/builtin_env.c builtins/builtin_export.c \
-		builtins/builtin_pwd.c builtins/builtin_unset.c
+#  		builtins/builtin_export.c \
+		builtins/builtin_unset.c
 OBJ = $(SRC:%.c=$(OBJ_DIR)/%.o)
 DEP = $(OBJ:.o=.d)
 
