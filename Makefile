@@ -25,6 +25,7 @@ SRC = 	parser/parse.c parser/parse_token.c parser/parse_token_handlers.c \
 		builtins/builtcheck.c builtins/builtin_exit.c builtins/builtin_env.c \
 		builtins/builtin_echo.c builtins/builtin_pwd.c \
 		executor/exec.c builtins/builtin_cd.c \
+		shell/shell.c \
 		minishell.c
 #  		builtins/builtin_export.c \
 		builtins/builtin_unset.c
