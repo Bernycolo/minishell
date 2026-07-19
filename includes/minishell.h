@@ -16,6 +16,7 @@
 # include <sys/wait.h>  // wait, waitpid, wait3, wait4
 # include <term.h>      // tgetent, tgetflag, tgetnum, tgetstr, tgoto, tputs
 # include <termios.h>   // tcsetattr, tcgetattr
+# include <errno.h>
 # include <unistd.h>    // write, read, access, close, fork, execve, dup, dup2,
 						// pipe, isatty, ttyname, ttyslot, getcwd, chdir, unlink
 
@@ -27,6 +28,7 @@
 # include "status.h"
 # include "shell.h"
 # include "parser.h"
+# include "utils.h"
 
 # include "builtins.h"
 # include "executor.h"

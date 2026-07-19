@@ -1,20 +1,6 @@
 #include "minishell.h"
 #include "libft.h"
 
-int	ft_strcmp(char *s1, char *s2)
-{
-	int	i;
-
-	i = 0;
-	if (ft_strlen(s1) != ft_strlen(s2))
-		return (1);
-	while (s1[i] && s1[i] == s2[i])
-		i++;
-	if (s1[i])
-		return (1);
-	return (0);
-}
-
 t_status	is_builtin(t_cmd *cmd)
 {
 	if (!ft_strcmp(cmd->arg[0], "echo") || !ft_strcmp(cmd->arg[0], "cd")

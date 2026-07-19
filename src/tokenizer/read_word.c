@@ -61,23 +61,6 @@ static char	*read_unquoted(const char *input, int *i)
 }
 
 /**
- * @brief Joins two strings and frees the allocated memory
- *
- * @param s1 The string one
- * @param s2 The string two
- * @return The join of the two strings
- */
-char	*ft_strjoin_free(char *s1, char *s2)
-{
-	char	*join;
-
-	join = ft_strjoin(s1, s2);
-	free(s1);
-	free(s2);
-	return (join);
-}
-
-/**
  * @brief Reads a word from the input and returns it
  *
  * @param input The input string
