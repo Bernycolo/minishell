@@ -27,22 +27,20 @@ t_status	is_builtin(t_cmd *cmd)
 
 void	ft_builtin(t_shell *shell)
 {
-	if (!ft_strncmp(shell->cmd->arg[0], "echo", 4))
+	if (!ft_strcmp(shell->cmd->arg[0], "echo"))
 		builtin_echo(shell);
-	else if (!ft_strncmp(shell->cmd->arg[0], "cd", 2))
-	//	printf("Is cd.\n");
+	else if (!ft_strcmp(shell->cmd->arg[0], "cd"))
 		builtin_cd(shell);
-	else if (!ft_strncmp(shell->cmd->arg[0], "pwd", 3))
+	else if (!ft_strcmp(shell->cmd->arg[0], "pwd"))
 		builtin_pwd(shell);
-	//	printf("Is pwd.\n");
 	else if (!ft_strncmp(shell->cmd->arg[0], "export", 6))
 		printf("Is export.\n");
 	//	builtin_export(shell);
 	else if (!ft_strncmp(shell->cmd->arg[0], "unset", 5))
 		printf("Is unset.\n");
 	//	ft_unset(mycmd);
-	else if (!ft_strncmp(shell->cmd->arg[0], "env", 3))
+	else if (!ft_strcmp(shell->cmd->arg[0], "env"))
 		builtin_env(shell);
-	else if (!ft_strncmp(shell->cmd->arg[0], "exit", 4))
+	else if (!ft_strcmp(shell->cmd->arg[0], "exit"))
 		builtin_exit(shell);
 }

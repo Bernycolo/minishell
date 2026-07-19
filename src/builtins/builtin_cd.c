@@ -11,19 +11,25 @@ void	builtin_cd(t_shell *msh)
 	char	*path;
 	char	*oldpwd;
 
-	path = NULL;
 	msh->last_status = 0;
-	if (msh->cmd->argc > 2)
-		return (printf("cd :too many arguments\n"), (void) NULL);
-	oldpwd = getcwd(NULL, 0);
-	env_set(&msh->env, "OLDPWD", oldpwd);
-	if (msh->cmd->argc == 2)
+/*	if (msh->cmd->argc > 2)
 	{
-		path = ft_strjoin(oldpwd, "/");
+		ft_putstr_fd("cd :too many arguments\n", 2);
+		msh->last_status = 1;
+		return ;
+	}
+*/	oldpwd = getcwd(NULL, 0);
+	env_set(&msh->env, "OLDPWD", oldpwd);
+	if (msh->cmd->argc == 1)
+		path = env_get(msh->env, "HOME");
+	else
+	{
+		if (msh->cmd->arg[1][0] != '/')
+			path = ft_strjoin(oldpwd, "/");
+		else
+			path = ft_strdup("");
 		path = ft_strjoin_free(path, ft_strdup(msh->cmd->arg[1]));
 	}
-	else if (msh->cmd->argc == 1)
-		path = env_get(msh->env, "HOME");
 	if (chdir(path))
 	{
 		msh->last_status = 1;
