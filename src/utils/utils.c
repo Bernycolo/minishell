@@ -45,6 +45,11 @@ char	*ft_strjoin_free(char *s1, char *s2)
 	return (join);
 }
 
+/**
+ * @brief Frees the memory allocated by a pointer void
+ * 
+ * @param ptr The pointer to free
+ */
 void	free_mem(void *ptr)
 {
 	if (!ptr)

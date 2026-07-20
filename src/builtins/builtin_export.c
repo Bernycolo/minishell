@@ -4,16 +4,25 @@
 static void		ft_export_without_arg(t_shell *msh);
 static t_env	*sort_list(t_env *lst);
 static t_env	*copy_list(t_env *lst);
-static int		check_export(char *arg);
+//static int		check_export(char *arg);
 
 void	builtin_export(t_shell *msh)
 {
-	int	i;
+//	int	i;
 
 	msh->last_status = 0;
 	if (msh->cmd->argc == 1)
-		ft_export_without_arg(msh);
+		print_cmd(msh->cmd);
 	else
+		print_cmd(msh->cmd);
+}
+
+
+
+
+
+
+/*
 	{
 		i = 0;
 		while (msh->cmd->arg[++i])
@@ -25,7 +34,7 @@ void	builtin_export(t_shell *msh)
 		}
 	}
 }
-
+*/
 static void	ft_export_without_arg(t_shell *msh)
 {
 	t_env	*tmp;
@@ -43,7 +52,7 @@ static void	ft_export_without_arg(t_shell *msh)
 			printf("declare -x %s\n", tmp->key);
 		tmp = tmp->next;
 	}
-	ft_free_list(&lst_cpy);
+	free_env(&lst_cpy);
 }
 
 static t_env	*sort_list(t_env *lst)
@@ -52,7 +61,7 @@ static t_env	*sort_list(t_env *lst)
 	t_env	*swap;
 
 	tmp = lst;
-	swap = ft_lstnew_env("", "", 0);
+	swap = new_env("", "");
 	while (lst->next != NULL)
 	{
 		if (lst->next && ft_strcmp(lst->key, lst->next->key) > 0)
@@ -69,7 +78,7 @@ static t_env	*sort_list(t_env *lst)
 			lst = lst->next;
 	}
 	lst = tmp;
-	ft_memfree(swap);
+	free_mem(swap);
 	return (lst);
 }
 
@@ -83,15 +92,14 @@ static t_env	*copy_list(t_env *lst)
 	while (tmp)
 	{
 		if (!cpy)
-			cpy = ft_lstnew_env(tmp->key, tmp->value, 1);
+			cpy = new_env(tmp->key, tmp->value);
 		else
-			ft_lstadd_back_env(&cpy, ft_lstnew_env(tmp->key, \
-tmp->value, 1));
+			add_env(&cpy, new_env(tmp->key, tmp->value));
 		tmp = tmp->next;
 	}
 	return (cpy);
 }
-
+/*
 static int	check_export(char *arg)
 {
 	int		i;
@@ -116,3 +124,4 @@ static int	check_export(char *arg)
 	}
 	return (ft_memfree(name), 1);
 }
+*/
