@@ -1,11 +1,11 @@
 #include "minishell.h"
 #include "libft.h"
-
+/*
 static void		ft_export_without_arg(t_shell *msh);
 static t_env	*sort_list(t_env *lst);
 static t_env	*copy_list(t_env *lst);
-//static int		check_export(char *arg);
-
+static int		check_export(char *arg);
+*/
 void	builtin_export(t_shell *msh)
 {
 //	int	i;
@@ -35,6 +35,7 @@ void	builtin_export(t_shell *msh)
 	}
 }
 */
+/*
 static void	ft_export_without_arg(t_shell *msh)
 {
 	t_env	*tmp;
@@ -99,6 +100,8 @@ static t_env	*copy_list(t_env *lst)
 	}
 	return (cpy);
 }
+
+*/
 /*
 static int	check_export(char *arg)
 {
