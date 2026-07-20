@@ -1,6 +1,17 @@
 #include "minishell.h"
-#include "libft.h"
+// #include "libft.h"
 
+void	builtin_unset(t_shell *shell)
+{
+	int	i;
+
+	i = 1;
+	while (i < shell->cmd->argc)
+		env_unset(&shell->env, shell->cmd->arg[i++]);
+}
+
+
+/*
 static void	ft_eraser(char *name, t_env *ptr);
 static void	del_variable(t_env *node);
 
@@ -44,3 +55,5 @@ static void	del_variable(t_env *node)
 	ft_memfree(node->value);
 	ft_memfree(node);
 }
+
+*/
