@@ -417,6 +417,8 @@ executor(shell)
 ## Instructions
 [⬆️ Back to Top](#-english-version)
 
+> ⚠️ **Important Note for macOS:** This project uses the GNU Readline library installed via Homebrew. The Makefile will automatically detect your architecture (Intel or Apple Silicon) to compile without issues
+
 **Prerequisites:** Requires a gcc/clang compiler, make, and the GNU readline library.
 
 ```bash
