@@ -6,7 +6,7 @@
 /*   By: bconejo- <bconejo-@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/04 18:53:53 by bconejo-          #+#    #+#             */
-/*   Updated: 2026/09/04 18:53:54 by bconejo-         ###   ########.fr       */
+/*   Updated: 2026/09/10 15:02:40 by bconejo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,7 +145,6 @@ char	*expand_group(char *value, int *i, t_env *env, int last_status)
 * @param env The environment list
 * @param last_status The last exit status returned by the shell
 */
-
 void	expand_tokens(t_token **list, t_env *env, int last_status)
 {
 	char	*word;
