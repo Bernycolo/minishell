@@ -6,7 +6,7 @@
 /*   By: bconejo- <bconejo-@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 13:40:54 by bconejo-          #+#    #+#             */
-/*   Updated: 2026/06/28 02:13:34 by bconejo-         ###   ########.fr       */
+/*   Updated: 2026/07/24 14:25:29 by bconejo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ int	ft_strlen(char const *str)
 {
 	int	length;
 
+	if (!str)
+		return (0);
 	length = 0;
 	while (str[length])
 		length++;

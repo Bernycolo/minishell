@@ -1,6 +1,24 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   builtin_export_no_args.c                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jcolina- <jcolina-@student.42malaga.com    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/09/04 18:50:12 by jcolina-          #+#    #+#             */
+/*   Updated: 2026/09/04 18:50:13 by jcolina-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 #include "libft.h"
 
+/**
+ * @brief Duplicates the environment list
+ * 
+ * @param env The environment list to duplicate
+ * @return The environment list duplicated 
+ */
 static t_env	*env_dup(t_env *env)
 {
 	t_env	*new_list;
@@ -11,18 +29,26 @@ static t_env	*env_dup(t_env *env)
 	cur = env;
 	while (cur)
 	{
-		node = new_env(cur->key, cur->value);
-		if (!node)
+		if (ft_strcmp(cur->key, "_"))
 		{
-			free_env(&new_list);
-			return (NULL);
+			node = new_env(cur->key, cur->value);
+			if (!node)
+			{
+				free_env(&new_list);
+				return (NULL);
+			}
+			add_env(&new_list, node);
 		}
-		add_env(&new_list, node);
 		cur = cur->next;
 	}
 	return (new_list);
 }
 
+/**
+ * @brief Sorts a environment list
+ * 
+ * @param env The environment list to sort
+ */
 static void	env_sort(t_env *env)
 {
 	t_env	*i;
@@ -51,6 +77,12 @@ static void	env_sort(t_env *env)
 	}
 }
 
+/**
+ * @brief Prints a line of the environment list
+ * 
+ * @param key The key to print
+ * @param value The value to print
+ */
 static void	print_export_entry(const char *key, const char *value)
 {
 	if (value)
@@ -59,6 +91,11 @@ static void	print_export_entry(const char *key, const char *value)
 		printf("declare -x %s\n", key);
 }
 
+/**
+ * @brief Prints the formatted and sorted environment list
+ * 
+ * @param shell The global status of minishell
+ */
 void	export_no_args(t_shell *shell)
 {
 	t_env	*copy;

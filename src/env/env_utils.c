@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   env_utils.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: bconejo- <bconejo-@student.42malaga.com    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/09/04 18:53:40 by bconejo-          #+#    #+#             */
+/*   Updated: 2026/09/04 18:53:41 by bconejo-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 #include "libft.h"
 
@@ -12,12 +24,18 @@ char	*env_get(t_env *env, const char *key)
 {
 	t_env	*aux;
 
+	if (!key)
+		return (NULL);
 	aux = env;
 	while (aux)
 	{
 		if (ft_strlen(key) == ft_strlen(aux->key) && ft_strncmp(key, aux->key,
 				ft_strlen(key)) == 0)
+		{
+			if (!aux->value)
+				return (ft_strdup(""));
 			return (ft_strdup(aux->value));
+		}
 		aux = aux->next;
 	}
 	return (NULL);
@@ -34,14 +52,17 @@ void	env_set(t_env **env, const char *key, const char *value)
 {
 	t_env	*aux;
 
+	if (!key)
+		return ;
 	aux = *env;
 	while (aux)
 	{
-		if (ft_strlen(key) == ft_strlen(aux->key) && ft_strncmp(key, aux->key,
-				ft_strlen(key)) == 0)
+		if (ft_strcmp(key, aux->key) == 0)
 		{
-			free(aux->value);
-			aux->value = ft_strdup(value);
+			if (aux->value && value)
+				free(aux->value);
+			if (value)
+				aux->value = ft_strdup(value);
 			return ;
 		}
 		aux = aux->next;
@@ -60,6 +81,8 @@ void	env_unset(t_env **env, const char *key)
 	t_env	*curr;
 	t_env	*prev;
 
+	if (!key)
+		return ;
 	curr = *env;
 	prev = NULL;
 	while (curr)

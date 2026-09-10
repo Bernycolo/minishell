@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   read_word.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: bconejo- <bconejo-@student.42malaga.com    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/09/04 18:55:21 by bconejo-          #+#    #+#             */
+/*   Updated: 2026/09/04 18:55:22 by bconejo-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 #include "libft.h"
 
@@ -13,6 +25,19 @@ t_status	is_op(const char *input, int i)
 	if (input[i] == '<' || input[i] == '>' || input[i] == '|')
 		return (SUCCESS);
 	return (FAILURE);
+}
+
+/**
+ * @brief Checks if a string contains any single or double quotes
+ * 
+ * @param value The string to check
+ * @return int 1 if at least one quote is found, 0 otherwise
+ */
+int	in_quoted(char *value)
+{
+	if (ft_strchr(value, '\'') || ft_strchr(value, '"'))
+		return (1);
+	return (0);
 }
 
 /**

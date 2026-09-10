@@ -1,5 +1,17 @@
-#include "minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parse.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: bconejo- <bconejo-@student.42malaga.com    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/09/04 18:54:31 by bconejo-          #+#    #+#             */
+/*   Updated: 2026/09/04 18:54:32 by bconejo-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "libft.h"
+#include "minishell.h"
 
 /**
  * @brief Prints the contents of the tokens list
@@ -35,7 +47,7 @@ void	print_token_list(t_token *token_list)
 
 /**
  * @brief Parses an input into a command list
- * 
+ *
  * @param input The input to parse
  * @param shell The global status of minishell
  * @return SUCCESS if it is parsed, FAILURE otherwise
@@ -55,10 +67,14 @@ t_status	parse(const char *input, t_shell *shell)
 		}
 		else
 		{
+			shell->last_status = 2;
 			free_tokenlst(&shell->tokens);
 			return (FAILURE);
 		}
 	}
 	else
+	{
+		shell->last_status = 2;
 		return (FAILURE);
+	}
 }

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   cmd.c                                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: bconejo- <bconejo-@student.42malaga.com    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/09/04 18:53:21 by bconejo-          #+#    #+#             */
+/*   Updated: 2026/09/04 18:53:22 by bconejo-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 /**
@@ -38,6 +50,8 @@ t_redir	*new_redir(t_token_type type)
 	redir->quoted = false;
 	redir->target = NULL;
 	redir->next = NULL;
+	redir->redir_in = STDIN_FILENO;
+	redir->redir_out = STDOUT_FILENO;
 	return (redir);
 }
 

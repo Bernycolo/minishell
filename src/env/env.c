@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   env.c                                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: bconejo- <bconejo-@student.42malaga.com    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/09/04 18:53:35 by bconejo-          #+#    #+#             */
+/*   Updated: 2026/09/04 18:53:36 by bconejo-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 #include "libft.h"
 
@@ -21,12 +33,17 @@ t_env	*new_env(const char *key, const char *value)
 		free(env);
 		return (NULL);
 	}
-	env->value = ft_strdup(value);
-	if (env->value == NULL)
+	if (!value)
+		env->value = NULL;
+	else
 	{
-		free(env->key);
-		free(env);
-		return (NULL);
+		env->value = ft_strdup(value);
+		if (env->value == NULL)
+		{
+			free(env->key);
+			free(env);
+			return (NULL);
+		}
 	}
 	env->next = NULL;
 	return (env);

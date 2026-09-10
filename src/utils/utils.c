@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: bconejo- <bconejo-@student.42malaga.com    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/09/04 19:00:02 by bconejo-          #+#    #+#             */
+/*   Updated: 2026/09/04 19:00:03 by bconejo-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 #include "libft.h"
 
@@ -52,4 +64,49 @@ void	free_mem(void *ptr)
 		return ;
 	free(ptr);
 	ptr = NULL;
+}
+
+/**
+ * @brief Frees the memory allocated by a double pointer void
+ * 
+ * @param ptr The pointer to free
+ */
+void	free_mem_all(char **ptr)
+{
+	int	i;
+
+	if (!ptr)
+		return ;
+	i = 0;
+	while (ptr[i])
+		free_mem(ptr[i++]);
+	free(ptr);
+	ptr = NULL;
+}
+
+/**
+ * @brief Reads a line from standard input for non-interactive mode
+ * 
+ * Uses get_next_line to read from STDIN (fd 0). If a line is successfully 
+ * read, it removes the trailing newline character ('\n') before returning it,
+ * mimicking the behavior of the standard readline function
+ * 
+ * @return A dynamically allocated string containing the line read, 
+ *         or NULL if EOF is reached or an error occurs
+ */
+char	*read_line(void)
+{
+	char	*line;
+	int		len;
+
+	line = get_next_line(0);
+	if (!line)
+		return (NULL);
+	len = ft_strlen(line);
+	if (len > 0)
+	{
+		if (line[len - 1] == '\n')
+			line[len -1] = '\0';
+	}
+	return (line);
 }

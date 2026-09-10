@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   lexer.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: bconejo- <bconejo-@student.42malaga.com    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/09/04 18:54:12 by bconejo-          #+#    #+#             */
+/*   Updated: 2026/09/04 18:54:13 by bconejo-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 #include "libft.h"
 
@@ -7,7 +19,7 @@
  * @param str The string to check
  * @return SUCCESS if it is not contains, FAILURE otherwise
  */
-t_status	contains_invalid_char(char *str)
+static t_status	contains_invalid_char(char *str)
 {
 	unsigned char	c;
 
@@ -36,7 +48,7 @@ t_status	lexer_validate(t_token *tokens)
 			write(2, "minishell: lexical error: invalid token\n", 40);
 			return (FAILURE);
 		}
-		if (contains_invalid_char(tokens->value))
+		if (contains_invalid_char(tokens->value) && !tokens->quoted)
 		{
 			write(2, "minishell: lexical error: invalid character\n", 44);
 			return (FAILURE);

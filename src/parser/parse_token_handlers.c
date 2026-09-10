@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parse_token_handlers.c                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: bconejo- <bconejo-@student.42malaga.com    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/09/04 18:54:57 by bconejo-          #+#    #+#             */
+/*   Updated: 2026/09/04 18:54:58 by bconejo-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 #include "parse_token.h"
 #include "libft.h"
@@ -26,7 +38,7 @@ t_status	manage_start(t_token *tokens, t_cmd **cmds, t_pstate *state)
 		*state = PS_REDIR;
 		return (SUCCESS);
 	}
-	print_syntax_error(tokens);
+	ft_putendl_fd("minishell: syntax error near unexpected token `|`", 2);
 	return (FAILURE);
 }
 
@@ -96,7 +108,7 @@ t_status	manage_redir(t_token *tokens, t_cmd **cmds, t_pstate *state)
 		*state = PS_AFTER_REDIR;
 		return (SUCCESS);
 	}
-	print_syntax_error(tokens);
+	print_syntax_error(tokens->next);
 	return (FAILURE);
 }
 
@@ -126,7 +138,7 @@ t_status	manage_after_redir(t_token *tokens, t_cmd **cmds, t_pstate *state)
 	}
 	else
 	{
-		print_syntax_error(tokens);
+		print_syntax_error(tokens->next);
 		return (FAILURE);
 	}
 	return (SUCCESS);

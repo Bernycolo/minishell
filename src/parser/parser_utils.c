@@ -1,5 +1,17 @@
-#include "minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parser_utils.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: bconejo- <bconejo-@student.42malaga.com    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/09/04 18:54:25 by bconejo-          #+#    #+#             */
+/*   Updated: 2026/09/04 18:54:26 by bconejo-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "libft.h"
+#include "minishell.h"
 
 /**
  * @brief Prints a syntax error in standar error
@@ -8,26 +20,29 @@
  */
 void	print_syntax_error(t_token *token)
 {
-	if (!token)
-		write(2, "minishell: syntax error near unexpected token `newline`\n",
-			57);
+	if (!token || !token->next)
+		ft_putendl_fd("minishell: syntax error near unexpected token `newline`",
+			2);
 	else if (!token->value)
 	{
+		ft_putstr_fd("minishell: syntax error near unexpected token `", 2);
 		if (token->type == PIPE)
-			write(2, "minishell: syntax error near unexpected token `|`", 51);
+			ft_putendl_fd("|`", 2);
 		else if (token->type == INPUT)
-			write(2, "minishell: syntax error near unexpected token `<`", 51);
+			ft_putendl_fd("<`", 2);
 		else if (token->type == TRUNC)
-			write(2, "minishell: syntax error near unexpected token `>`", 51);
+			ft_putendl_fd(">`", 2);
 		else if (token->type == APPEND)
-			write(2, "minishell: syntax error near unexpected token `>>`", 52);
+			ft_putendl_fd(">>`", 2);
 		else if (token->type == HEREDOC)
-			write(2, "minishell: syntax error near unexpected token `<<`", 52);
+			ft_putendl_fd("<<`", 2);
 	}
 	else
 	{
-		write(2, "minishell: syntax error near unexpected token `", 48);
-		write(2, token->value, ft_strlen(token->value));
-		write(2, "`\n", 2);
+		ft_putstr_fd("minishell: syntax error near unexpected token `", 2);
+		ft_putstr_fd(token->value, 2);
+		if (token->next && token->next->type == PIPE)
+			ft_putstr_fd(token->next->value, 2);
+		ft_putendl_fd("`", 2);
 	}
 }

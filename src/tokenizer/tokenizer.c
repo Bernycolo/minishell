@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   tokenizer.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: bconejo- <bconejo-@student.42malaga.com    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/09/04 18:55:12 by bconejo-          #+#    #+#             */
+/*   Updated: 2026/09/04 18:55:13 by bconejo-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 /**
@@ -75,7 +87,7 @@ static char	*value_op(t_token_type type)
  * @param i A pointer to the current index (will be updated)
  * @return SUCCESS if it is created the token, FAILURE otherwise
  */
-t_status	create_token_node(const char *input, t_token **list, int *i)
+static t_status	create_token_node(const char *input, t_token **list, int *i)
 {
 	t_token_type	type;
 	char			*word;

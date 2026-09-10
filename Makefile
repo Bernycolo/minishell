@@ -1,15 +1,28 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: bconejo- <bconejo-@student.42malaga.com    +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2026/09/04 18:55:59 by bconejo-          #+#    #+#              #
+#    Updated: 2026/09/04 20:33:42 by bconejo-         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
 # Variables
 CC = cc
-CFLAGS = -Wall -Werror -Wextra -I/usr/include
+CFLAGS = -Wall -Werror -Wextra -I/usr/include -g
 INCLUDES = -I includes -I $(LIBFT_DIR)
 
 SRC_DIR = src
 OBJ_DIR = obj
 
-LIBS = -lreadline
+LIBS = -lreadline -lncurses
 
 NAME = minishell
 
+BLUE = \033[0;34m
 GREEN = \033[0;32m
 RESET = \033[0m
 
@@ -24,8 +37,11 @@ SRC = 	parser/parse.c parser/parse_token.c parser/parse_token_handlers.c \
 		utils/utils.c \
 		builtins/builtcheck.c builtins/builtin_exit.c builtins/builtin_env.c \
 		builtins/builtin_echo.c builtins/builtin_pwd.c builtins/builtin_export.c \
-		builtins/builtin_export_no_args.c \
-		executor/exec.c builtins/builtin_cd.c builtins/builtin_unset.c \
+		builtins/builtin_export_no_args.c builtins/builtin_export_with_args.c \
+		builtins/builtin_cd.c builtins/builtin_unset.c \
+		executor/exec.c executor/pipeline_utils.c executor/pipeline_utils_2.c \
+		executor/single_exec.c executor/redir.c executor/redir_utils.c \
+		signals/signals.c \
 		shell/shell.c \
 		minishell.c
 
@@ -68,4 +84,14 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all clean fclean re
+# Memory testing rules
+valgrind: $(NAME)
+	@printf "$(GREEN)Running $(NAME) with Valgrind...$(RESET)\n"
+	@valgrind --leak-check=full --show-leak-kinds=all --suppressions=supp.supp --track-origins=yes --track-fds=yes ./$(NAME)
+
+asan: fclean
+	@printf "$(BLUE)Compiling with AddressSanitizer...$(RESET)\n"
+	@$(MAKE) --no-print-directory all CFLAGS="$(CFLAGS) -fsanitize=address"
+	@printf "$(GREEN)✓ Compiled with Asan. Run ./$(NAME) to test.$(RESET)\n"
+
+.PHONY: all clean fclean re valgrind asan

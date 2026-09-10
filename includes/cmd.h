@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   cmd.h                                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: bconejo- <bconejo-@student.42malaga.com    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/09/04 18:41:49 by bconejo-          #+#    #+#             */
+/*   Updated: 2026/09/04 18:41:50 by bconejo-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef CMD_H
 # define CMD_H
 
@@ -25,6 +37,8 @@ typedef enum e_pstate
 typedef struct s_redir
 {
 	t_token_type	type;
+	int				redir_in;
+	int				redir_out;
 	char			*target;
 	bool			quoted;
 	struct s_redir	*next;

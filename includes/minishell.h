@@ -1,24 +1,30 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: bconejo- <bconejo-@student.42malaga.com    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/09/04 18:46:36 by bconejo-          #+#    #+#             */
+/*   Updated: 2026/09/04 18:46:37 by bconejo-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-# include <dirent.h> // opendir, readdir, closedir
-# include <fcntl.h>  // open
+# include <fcntl.h>
 # include <limits.h>
 # include <readline/history.h>
 # include <readline/readline.h>
-# include <signal.h>    // signal, sigaction, sigemptyset, sigaddset, kill
+# include <signal.h>
 # include <stdbool.h>	
-# include <stdio.h>     // printf, perror
-# include <stdlib.h>    // malloc, free, getenv, exit
-# include <string.h>    // strerror
-# include <sys/ioctl.h> // ioctl
-# include <sys/stat.h>  // stat, lstat, fstat
-# include <sys/wait.h>  // wait, waitpid, wait3, wait4
-# include <term.h>      // tgetent, tgetflag, tgetnum, tgetstr, tgoto, tputs
-# include <termios.h>   // tcsetattr, tcgetattr
+# include <stdio.h>
+# include <stdlib.h>
+# include <string.h>
+# include <sys/wait.h>
 # include <errno.h>
-# include <unistd.h>    // write, read, access, close, fork, execve, dup, dup2,
-						// pipe, isatty, ttyname, ttyslot, getcwd, chdir, unlink
+# include <unistd.h>
 
 # include "structs.h"
 # include "environment.h"
@@ -29,6 +35,7 @@
 # include "shell.h"
 # include "parser.h"
 # include "utils.h"
+# include "signals.h"
 
 # include "builtins.h"
 # include "executor.h"
