@@ -6,7 +6,7 @@
 #    By: bconejo- <bconejo-@student.42malaga.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/09/04 18:55:59 by bconejo-          #+#    #+#              #
-#    Updated: 2026/09/04 20:33:42 by bconejo-         ###   ########.fr        #
+#    Updated: 2026/09/10 16:11:57 by bconejo-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,17 +14,31 @@
 CC = cc
 CFLAGS = -Wall -Werror -Wextra -I/usr/include -g
 INCLUDES = -I includes -I $(LIBFT_DIR)
+LIBS = -lreadline -lncurses
 
 SRC_DIR = src
 OBJ_DIR = obj
-
-LIBS = -lreadline -lncurses
 
 NAME = minishell
 
 BLUE = \033[0;34m
 GREEN = \033[0;32m
 RESET = \033[0m
+
+# OS and Architecture Detection
+UNAME = $(shell uname)
+ifeq ($(UNAME), Darwin)
+	UNAME_M = $(shell uname -m)
+	ifeq ($(UNAME_M), arm64)
+		# Mac Apple Silicon (M1/M2/M3)
+		INCLUDES += -I/opt/homebrew/opt/readline/include
+		LIBS += -L/opt/homebrew/opt/readline/lib
+	else
+		# Mac Intel
+		INCLUDES += -I/usr/local/opt/readline/include
+		LIBS += -L/usr/local/opt/readline/lib
+	endif
+endif
 
 # Files
 SRC = 	parser/parse.c parser/parse_token.c parser/parse_token_handlers.c \

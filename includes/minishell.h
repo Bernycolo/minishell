@@ -6,7 +6,7 @@
 /*   By: bconejo- <bconejo-@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/04 18:46:36 by bconejo-          #+#    #+#             */
-/*   Updated: 2026/09/04 18:46:37 by bconejo-         ###   ########.fr       */
+/*   Updated: 2026/09/10 16:08:54 by bconejo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,13 @@
 
 # include <fcntl.h>
 # include <limits.h>
-# include <readline/history.h>
-# include <readline/readline.h>
 # include <signal.h>
 # include <stdbool.h>	
 # include <stdio.h>
 # include <stdlib.h>
 # include <string.h>
+# include <readline/history.h>
+# include <readline/readline.h>
 # include <sys/wait.h>
 # include <errno.h>
 # include <unistd.h>
